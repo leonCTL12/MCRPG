@@ -13,6 +13,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void TestPush() {
-        //Test push
+        //Test push2
     }
 }
