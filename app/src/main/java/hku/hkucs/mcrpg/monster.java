@@ -1,3 +1,5 @@
+package hku.hkucs.mcrpg;
+
 public class monster {
 
     private int health;
@@ -10,6 +12,10 @@ public class monster {
     final private int ABILITY_2_CD_MAX = 2;
     final private int ABILITY_3_CD_MAX = 4;
     final private int ABILITY_4_CD_MAX = 6;
+
+    public monster() {
+        initialize();
+    }
 
     public void initialize() {
         health = 100;
@@ -27,6 +33,22 @@ public class monster {
         else return health;
     }
 
+    public int getAbility_1_cd() {
+        return ability_1_cd;
+    }
+
+    public int getAbility_2_cd() {
+        return ability_2_cd;
+    }
+
+    public int getAbility_3_cd() {
+        return ability_3_cd;
+    }
+
+    public int getAbility_4_cd() {
+        return ability_4_cd;
+    }
+
     //  return -1 if the monster is dead
     //         1  if the monster is not dead
     public int attack(int damageValue) {
@@ -37,7 +59,7 @@ public class monster {
 
     //  executed when turn ended
     //  will call other functions to implement ability actions
-    public void turnEnd() {
+    public void endTurn() {
         ability_1_cd--;
         ability_2_cd--;
         ability_3_cd--;
