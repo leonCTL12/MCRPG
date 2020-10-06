@@ -2,10 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/PlayerAbilityVerticalLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView_monsterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="monsterName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView_ability1_name"
@@ -53,43 +62,77 @@
         android:id="@+id/textView_ability3_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="198dp"
-        android:layout_marginLeft="198dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
         android:layout_marginTop="42dp"
         android:text="Ability 3"
-        app:layout_constraintStart_toEndOf="@+id/textView_ability1_name"
+        app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <TextView
         android:id="@+id/textView_ability3_cd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="219dp"
-        android:layout_marginLeft="219dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
         android:text="CD 4"
-        app:layout_constraintStart_toEndOf="@+id/textView_ability1_cd"
+        app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability3_name" />
 
     <TextView
         android:id="@+id/textView_ability4_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="198dp"
-        android:layout_marginLeft="198dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
         android:text="Ability 4"
-        app:layout_constraintStart_toEndOf="@+id/textView_ability2_name"
+        app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability3_cd" />
 
     <TextView
         android:id="@+id/textView_ability4_cd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="219dp"
-        android:layout_marginLeft="219dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
         android:text="CD 6"
-        app:layout_constraintStart_toEndOf="@+id/textView_ability2_cd"
+        app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability4_name" />
+
+    <ImageView
+        android:id="@+id/imageView_monster"
+        android:layout_width="189dp"
+        android:layout_height="171dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:srcCompat="@drawable/monster_slime" />
+
+    <ImageView
+        android:id="@+id/imageView_effect_fire1"
+        android:layout_width="114dp"
+        android:layout_height="119dp"
+        android:layout_marginTop="40dp"
+        android:alpha="0.4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.373"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:srcCompat="@drawable/effect_fire" />
+
+    <ImageView
+        android:id="@+id/imageView_effect_fire2"
+        android:layout_width="101dp"
+        android:layout_height="119dp"
+        android:layout_marginTop="40dp"
+        android:alpha="0.4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.641"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:srcCompat="@drawable/effect_fire" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -98,20 +141,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_monsterName" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginLeft="108dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginStart="111dp"
+        android:layout_marginLeft="111dp"
+        android:layout_marginTop="219dp"
         android:text="Attack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
@@ -127,92 +171,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
-    <LinearLayout
-        android:id="@+id/MCVerticalLayout"
-        android:layout_width="153dp"
-        android:layout_height="224dp"
-        android:layout_marginBottom="60dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        app:layout_constraintVertical_bias="0.93">
-
-        <Button
-            android:id="@+id/Choice1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/Choice2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/Choice3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/Choice4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Button" />
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/PlayerHealthBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="300dp"
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MCVerticalLayout"
-        app:layout_constraintVertical_bias="0.52" />
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="219dp"
+        android:text="On fire"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
-    <LinearLayout
-        android:layout_width="70dp"
-        android:layout_height="224dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824">
-
-        <Button
-            android:id="@+id/Ability1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/Ability2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/Ability3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/Ability4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="21dp"
+        android:text="Off fire"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

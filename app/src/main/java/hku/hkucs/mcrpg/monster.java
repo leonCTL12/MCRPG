@@ -8,6 +8,7 @@ public class monster {
     private int ability_3_cd;
     private int ability_4_cd;
     private boolean effect_onFire;
+    private String name;
     final private int ABILITY_1_CD_MAX = 1;
     final private int ABILITY_2_CD_MAX = 2;
     final private int ABILITY_3_CD_MAX = 4;
@@ -24,7 +25,32 @@ public class monster {
         ability_3_cd = ABILITY_3_CD_MAX;
         ability_4_cd = ABILITY_4_CD_MAX;
         effect_onFire = false;
+        name = "monsterName";
         return;
+    }
+
+    public void setName(String monsterName) {
+        name = monsterName;
+        return;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setOnFire() {
+        effect_onFire = true;
+        return;
+    }
+
+    // TODO: manually off fire or fire only last for certain rounds?
+    public void setOffFire() {
+        effect_onFire = false;
+        return;
+    }
+
+    public boolean getFireStatus() {
+        return  effect_onFire;
     }
 
     //  return value from 0 to 100
