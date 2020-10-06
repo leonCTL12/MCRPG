@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity { //Leon: this script will act as something like game manager in Unity
 
+    Player player;
     monster monster;
     ProgressBar monsterHealthBar;
     TextView ability1_cd;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         ability2_cd = findViewById(R.id.textView_ability2_cd);
         ability3_cd = findViewById(R.id.textView_ability3_cd);
         ability4_cd = findViewById(R.id.textView_ability4_cd);
+
 
         // button for testing
         Button button_attack = findViewById(R.id.button);

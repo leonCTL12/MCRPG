@@ -1,3 +1,5 @@
+package hku.hkucs.mcrpg;
+
 import android.os.CountDownTimer;
 
 public class Player {
