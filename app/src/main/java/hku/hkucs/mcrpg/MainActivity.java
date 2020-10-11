@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     Thread timerThread;
     Thread updateThread;
 
+    //Question
+    TextView Questionlocation;
+    questionbank questionset;
+    questionstruct currquestion;
 
 
 
@@ -104,6 +108,17 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             }
         };
         timerThread.start();
+
+        //Question
+        questionset = new questionbank();
+        questionset.buildingaquestionset();// invoke the question questionbank, the question set array has been shuffled and ready to be drawn
+        currquestion = questionset.randomdrawquestion(); //draw the first question
+        Questionlocation = findViewById(R.id.textView_Question);
+        Questionlocation.setText(currquestion.getquestion());
+        optionA.setText(currquestion.getansbank().get(0));
+        optionB.setText(currquestion.getansbank().get(1));
+        optionC.setText(currquestion.getansbank().get(2));
+        optionD.setText(currquestion.getansbank().get(3));
 
         //general
         //Leon: Can we implement sth like unity's update by multi-threading? Will this cause any performance problem?
