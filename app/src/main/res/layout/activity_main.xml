@@ -21,10 +21,10 @@
         android:id="@+id/textView_ability1_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="42dp"
-        android:text="Ability 1"
+        android:text="Normal Attack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
@@ -32,8 +32,8 @@
         android:id="@+id/textView_ability1_cd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:text="CD 1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability1_name" />
@@ -42,8 +42,8 @@
         android:id="@+id/textView_ability2_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="17dp"
         android:text="Ability 2"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +53,8 @@
         android:id="@+id/textView_ability2_cd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:text="CD 2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability2_name" />
@@ -63,8 +63,6 @@
         android:id="@+id/textView_ability3_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
         android:layout_marginTop="42dp"
         android:text="Ability 3"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
@@ -74,8 +72,6 @@
         android:id="@+id/textView_ability3_cd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
         android:text="CD 4"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability3_name" />
@@ -84,8 +80,6 @@
         android:id="@+id/textView_ability4_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
         android:layout_marginTop="16dp"
         android:text="Ability 4"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
@@ -95,8 +89,6 @@
         android:id="@+id/textView_ability4_cd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
         android:text="CD 6"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability4_name" />
@@ -390,5 +382,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_monster" />
+
+    <TextView
+        android:id="@+id/textView_stage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="9dp"
+        android:text="Stage 1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

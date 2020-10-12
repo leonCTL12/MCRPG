@@ -1,31 +1,35 @@
 package hku.hkucs.mcrpg;
 
-public class monster {
+public class Monster {
 
-    private int health;
-    private int ability_1_cd;
-    private int ability_2_cd;
-    private int ability_3_cd;
-    private int ability_4_cd;
-    private boolean effect_onFire;
     private String name;
-    final private int ABILITY_1_CD_MAX = 1;
-    final private int ABILITY_2_CD_MAX = 2;
-    final private int ABILITY_3_CD_MAX = 4;
-    final private int ABILITY_4_CD_MAX = 6;
+    private String imagePath;
+    private String abilityName[];
+    private int abilityID[]; // id -1 = no ability, 0 = normal attack
+    private int abilityCD[];
+    private int abilityCD_ADJ[];
+    private int abilityCD_MAX[];
+    private int health;
+    final private int baseDamage = 5;
+    private int currentDamage;
+    private boolean abilityCast[]; // for checking if any ability needed to be casted
+    private boolean effect_onFire;
 
-    public monster() {
+
+    public Monster() {
         initialize();
     }
 
     public void initialize() {
-        health = 100;
-        ability_1_cd = ABILITY_1_CD_MAX;
-        ability_2_cd = ABILITY_2_CD_MAX;
-        ability_3_cd = ABILITY_3_CD_MAX;
-        ability_4_cd = ABILITY_4_CD_MAX;
-        effect_onFire = false;
         name = "monsterName";
+        imagePath = "";
+        abilityName = new String[]{"Normal Attack", "Ability 2", "Ability 3", "Ability 4"};
+        abilityID = new int[]{0, -1, -1, -1};
+        abilityCD_MAX = new int[]{0, 0, 0, 0};
+        abilityCD = abilityCD_MAX.clone();
+        health = 100;
+        abilityCast = new boolean[]{false, false, false, false};
+        effect_onFire = false;
         return;
     }
 
@@ -36,6 +40,54 @@ public class monster {
 
     public String getName() {
         return name;
+    }
+
+    public void setImagePath(String path) {
+        imagePath = path;
+        return;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    // Input: int array of 4
+    // This will also set the ability names.
+    public void setAbilityID(int ID[]) {
+        abilityID = ID.clone();
+        for (int i = 0; i < 4; i++) {
+            switch (abilityID[i]) {
+                case 0:
+                    abilityName[i] = "Normal Attack";
+                    break;
+                case 1:
+                    abilityName[i] = "Decrease Answering Time";
+                    break;
+                case 2:
+                    abilityName[i] = "Increase Question Difficulty";
+                    break;
+                case 3:
+                    abilityName[i] = "Increase Player Skill CD";
+                    break;
+                case 4:
+                    abilityName[i] = "Scramble Answer";
+                    break;
+                case 5:
+                    abilityName[i] = "Lock Player Skills";
+                    break;
+                case 6:
+                    abilityName[i] = "Double-edge Sword";
+                    break;
+                default:
+                    abilityName[i] = "Null Ability " + String.valueOf(i + 1);
+                    break;
+            }
+        }
+        return;
+    }
+
+    public int getAbilityID(int index) {
+        return abilityID[index];
     }
 
     public void setOnFire() {
@@ -53,28 +105,61 @@ public class monster {
         return  effect_onFire;
     }
 
+    public void setHealth(int healthInput) {
+        health = healthInput;
+        return;
+    }
+
     //  return value from 0 to 100
     public int getHealth() {
         if (health <= 0) return 0;
         else return health;
     }
 
-    public int getAbility_1_cd() {
-        return ability_1_cd;
+    public void setAbilityCD_ADJ(int stage){
+        abilityCD_ADJ = abilityCD_MAX.clone();
+        for (int i = 0; i < 4; i++) {
+            abilityCD_ADJ[i] = abilityCD_MAX[i] - stage + 1;
+            if (abilityCD_ADJ[i] <= 0) abilityCD_ADJ[i] = 1;
+        }
+        abilityCD = abilityCD_ADJ.clone();
     }
 
-    public int getAbility_2_cd() {
-        return ability_2_cd;
+    // Input: int array of 4
+    public void setAbilityCD_MAX(int coolDown[]) {
+        abilityCD_MAX = coolDown.clone();
+        setAbilityCD_ADJ(1);
+        return;
     }
 
-    public int getAbility_3_cd() {
-        return ability_3_cd;
+    public int getAbilityCD(int index) {
+        return abilityCD[index];
     }
 
-    public int getAbility_4_cd() {
-        return ability_4_cd;
+    public String getAbilityName(int index) {
+        return abilityName[index];
     }
 
+    public void setAbilityCast(int index, boolean status) {
+        abilityCast[index] = status;
+        return;
+    }
+
+    public boolean getAbilityCast(int index) {
+        return abilityCast[index];
+    }
+
+    public void setDamage(int multiplier) {
+        currentDamage = baseDamage * multiplier;
+        return;
+    }
+
+    public int getDamage() {
+        return currentDamage;
+    }
+
+    //  Called when every correct answer is made.
+    //
     //  return -1 if the monster is dead
     //         1  if the monster is not dead
     public int attack(int damageValue) {
@@ -83,29 +168,20 @@ public class monster {
         else return 1;
     }
 
-    //  executed when turn ended
-    //  will call other functions to implement ability actions
+    //  Called when turn ended
+    //  Lower all ability cd by 1
     public void endTurn() {
-        ability_1_cd--;
-        ability_2_cd--;
-        ability_3_cd--;
-        ability_4_cd--;
+        for (int i = 0; i < 4; i++) {
+            if (--abilityCD[i] <= 0) {
+                abilityCast[i] = true;
+                abilityCD[i] = abilityCD_ADJ[i];
+            }
+        }
+        return;
+    }
 
-        if (ability_1_cd <= 0) {
-            // TODO implement action
-            ability_1_cd = ABILITY_1_CD_MAX;
-        }
-        if (ability_2_cd <= 0) {
-            // TODO implement action
-            ability_2_cd = ABILITY_2_CD_MAX;
-        }
-        if (ability_3_cd <= 0) {
-            // TODO implement action
-            ability_3_cd = ABILITY_3_CD_MAX;
-        }
-        if (ability_4_cd <= 0) {
-            // TODO implement action
-            ability_4_cd = ABILITY_4_CD_MAX;
-        }
+    public boolean isDead() {
+        if (health <= 0) return true;
+        else return false;
     }
 }
