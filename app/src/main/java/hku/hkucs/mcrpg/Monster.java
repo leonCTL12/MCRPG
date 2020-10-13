@@ -101,6 +101,12 @@ public class Monster {
         return;
     }
 
+    public void InreaseMonsterCD() {
+        for (int i = 0; i<abilityCD.length; i++) {
+            abilityCD[i]+=3;
+        }
+    }
+
     public boolean getFireStatus() {
         return  effect_onFire;
     }
@@ -174,8 +180,8 @@ public class Monster {
         for (int i = 0; i < 4; i++) {
             if (--abilityCD[i] <= 0) {
                 abilityCast[i] = true;
-                System.out.println(abilityCD == null);
-                System.out.println(abilityCD_ADJ == null);
+//                System.out.println(abilityCD == null);
+//                System.out.println(abilityCD_ADJ == null);
                 abilityCD[i] = abilityCD_ADJ[i];
             }
         }

@@ -16,17 +16,11 @@ public class Player {
     }
     private long timeAvailablePerQuestion = 30000; //That is 30 sec
     private long additionTime = 0;
-    private boolean heal;
-    private int skill1CoolDown = 8; //eliminate wrong ans
-
-    private int skill2CoolDown = 10; //delay monster attack
-
-    private int skill3CoolDown = 6; //Increase thinking time
-
-    private int skill4CoolDown = 4; //heal
+    public boolean heal;
 
 
-    public int[] skillsCoolDown = {skill1CoolDown, skill2CoolDown, skill3CoolDown, skill4CoolDown};
+    private int[] skillsOriginalCD = new int[]{8,10,6,4};
+    public int[] skillsCoolDown = {skillsOriginalCD[0], skillsOriginalCD[1], skillsOriginalCD[2], skillsOriginalCD[3]};
 
     public void underAttack(int damage) {
             health -= damage;
@@ -52,14 +46,21 @@ public class Player {
     public void heal(float healAmount) {
         health+=healAmount;
         heal = false;
-        skillsCoolDown[3] = skill4CoolDown;
     }
 
     public void playerStartTurn() {
-
         resetTimer();
     }
 
+    public void ResetCoolDown(int skillsIndex) {
+        skillsCoolDown[skillsIndex] = skillsOriginalCD[skillsIndex];
+    }
+
+    public void DelayPlayerCD() {
+        for (int i = 0; i< skillsCoolDown.length; i++) {
+            skillsCoolDown[i]+=4;
+        }
+    }
     public void playerEndTurn() {
 
         for (int i = 0; i < 4; i++) {
@@ -75,9 +76,8 @@ public class Player {
     }
 
     public void increaseAvailableTime() {
-        additionTime+=30000; //we can directly increase the additionTime instead of restarting the timer
-        timeAvailablePerQuestion = 60000;  //we set it just to calculate the damage player dealt proportionally, this will be reset at the end of the turn
-        skillsCoolDown[2] = skill3CoolDown;
+       stopTimer();
+       resetTimer();
         System.out.println("updated skill3 cd");
     }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="1"
-    android:background="#FF0000">
+    android:background="#2B2B2B">
 
     <ImageView
         android:id="@+id/imageView"
@@ -14,7 +14,6 @@
         android:layout_alignParentRight="false"
         android:layout_alignParentBottom="true"
         android:alpha="1"
-        android:src="@drawable/dealth"
-         />
+        android:src="@drawable/dealth" />
 
 </RelativeLayout>

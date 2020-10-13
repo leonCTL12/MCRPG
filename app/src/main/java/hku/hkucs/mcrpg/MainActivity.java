@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.net.Inet4Address;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity { //Leon: this script will act as something like game manager in Unity
 
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     TextView questionLocation;
     questionBank questionSet;
     questionStruct currentQuestion;
+    Button[] options;
 
 
 
@@ -112,6 +115,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill3CD = findViewById(R.id.Skill3CD);
         skill4CD = findViewById(R.id.Skill4CD);
 
+        options = new Button[]{optionA, optionB, optionC, optionD};
+
         //Timer
 
         timer = findViewById(R.id.Timer);
@@ -153,7 +158,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionA");
 
 
@@ -168,7 +172,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionB");
                 if(questionSet.evaluation(1, currentQuestion)) {
 
@@ -181,7 +184,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionC");
                 if(questionSet.evaluation(2, currentQuestion)) {
 
@@ -194,7 +196,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionD");
                 if(questionSet.evaluation(3, currentQuestion)) {
 
@@ -209,6 +210,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             @Override
             public void onClick(View v) {
                 System.out.println("Skill1");
+                HideIncorrectOption();
+                player.ResetCoolDown(0);
             }
         });
         skill2.setOnClickListener(new View.OnClickListener() {
@@ -216,18 +219,23 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 System.out.println("Skill2");
                 //TODO: call monster add all cool down function
+                monster.InreaseMonsterCD();
+                player.ResetCoolDown(1);
             }
         });
         skill3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 player.increaseAvailableTime();
+                player.ResetCoolDown(2);
             }
         });
         skill4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Skill4");
+                player.heal = true;
+                player.ResetCoolDown(3);
             }
         });
 
@@ -271,6 +279,12 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         }
         monster.setOffFire();
         player.playerEndTurn();
+
+        for (int i = 0; i<options.length; i++) {
+            options[i].setAlpha(1);
+            options[i].setClickable(true);
+        }
+
         newTurn();
     }
 
@@ -326,6 +340,27 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionC.setText(currentQuestion.getAnsBank().get(2));
         optionD.setText(currentQuestion.getAnsBank().get(3));
     }
+
+    public void HideIncorrectOption() {
+        int randomNumberCount = 0;
+        int[] deleteOptions = {99,99}; // delete 1 99
+        Random random = new Random();
+        while (randomNumberCount<2) { //change to 2 later
+            int deleteOption = random.nextInt(4);
+            if (deleteOption != currentQuestion.ansPosition && deleteOptions[0] != deleteOption ) {
+                System.out.println("Option = " + deleteOption);
+                deleteOptions[randomNumberCount] = deleteOption;
+                randomNumberCount++;
+            }
+        }
+
+        for (int i = 0; i< deleteOptions.length; i++) {
+            options[deleteOptions[i]].setAlpha(0.3f);
+            options[deleteOptions[i]].setClickable(false);
+        }
+
+    }
+
     public void newTurn() {
         RenderNewQuestion();
         player.playerStartTurn();
@@ -355,6 +390,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     case 3:
                         // TODO: call relative function
                         System.out.println("Monster Debug: Increasing player skill CD.");
+                        player.DelayPlayerCD();
                         break;
                     case 4:
                         // TODO: call relative function
