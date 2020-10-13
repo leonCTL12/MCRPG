@@ -226,14 +226,6 @@
                 android:text="0"
                 android:textSize="60sp" />
 
-            <ImageView
-                android:id="@+id/lock1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0"
-                android:clickable="false"
-                app:srcCompat="@drawable/lock" />
-
         </FrameLayout>
 
         <FrameLayout
@@ -258,14 +250,6 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="0"
                 android:textSize="60sp" />
-
-            <ImageView
-                android:id="@+id/lock2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0"
-                android:clickable="false"
-                app:srcCompat="@drawable/lock" />
         </FrameLayout>
 
         <FrameLayout
@@ -290,14 +274,6 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="0"
                 android:textSize="60sp" />
-
-            <ImageView
-                android:id="@+id/lock3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0"
-                android:clickable="false"
-                app:srcCompat="@drawable/lock" />
         </FrameLayout>
 
         <FrameLayout
@@ -322,14 +298,6 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="0"
                 android:textSize="60sp" />
-
-            <ImageView
-                android:id="@+id/lock4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0"
-                android:clickable="false"
-                app:srcCompat="@drawable/lock" />
         </FrameLayout>
 
     </LinearLayout>

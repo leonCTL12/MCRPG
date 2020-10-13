@@ -1,13 +1,9 @@
 package hku.hkucs.mcrpg;
 
-import androidx.annotation.FloatRange;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,9 +18,6 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity { //Leon: this script will act as something like game manager in Unity
 
     private static MainActivity instance;
-    private boolean hardQuestion = false;
-    private boolean scrambleOptions = false;
-
 
     public  static  MainActivity getInstance() {
         return  instance;
@@ -48,7 +41,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     ImageView effect_fire1;
     ImageView effect_fire2;
 
-
     //Player
     Player player;
     ProgressBar playerHealthBar;
@@ -64,11 +56,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     TextView skill2CD;
     TextView skill3CD;
     TextView skill4CD;
-    ImageView lock1;
-    ImageView lock2;
-    ImageView lock3;
-    ImageView lock4;
-    ImageView[] locks;
 
 
     //Timer
@@ -127,14 +114,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill2CD = findViewById(R.id.Skill2CD);
         skill3CD = findViewById(R.id.Skill3CD);
         skill4CD = findViewById(R.id.Skill4CD);
-        lock1 = findViewById(R.id.lock1);
-        lock2 = findViewById(R.id.lock2);
-        lock3 = findViewById(R.id.lock3);
-        lock4 = findViewById(R.id.lock4);
-
 
         options = new Button[]{optionA, optionB, optionC, optionD};
-        locks= new ImageView[]{lock1,lock2,lock3,lock4};
 
         //Timer
 
@@ -169,7 +150,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
         //general
         //Game Initialization
-        player.startTimer(30000);
+        player.startTimer();
         UpdateMonster();
         newTurn();
 
@@ -237,6 +218,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             @Override
             public void onClick(View v) {
                 System.out.println("Skill2");
+                //TODO: call monster add all cool down function
                 monster.InreaseMonsterCD();
                 player.ResetCoolDown(1);
             }
@@ -267,7 +249,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     while (!updateThread.isInterrupted()) {
                         Thread.sleep(10);
                         runOnUiThread(new Runnable() {
-                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                             @Override
                             public void run() {
                                 // update TextView here!
@@ -284,26 +265,9 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     }
 
-    public void updateSkillsLock() {
-        if (player.skillLockRounds == 1) {
-            System.out.println("Unlock");
-            for(int i = 0; i< locks.length; i++ ){
-                locks[i].setClickable(false);
-                locks[i].setAlpha(0f);
-            }
-        } else {
-            System.out.println("get Locked");
-            for (int i = 0; i < locks.length; i++) {
-                locks[i].setClickable(true);
-                locks[i].setAlpha((float)player.skillLockRounds/3);
-            }
-        }
-    }
-
 
 
     public void EndTurn(int damage) {
-        player.playerEndTurn();
         monster.underAttack(damage);
         if (monster.isDead()) {
             monsterSet.defected();
@@ -314,6 +278,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             CheckAbilityCasting();
         }
         monster.setOffFire();
+        player.playerEndTurn();
 
         for (int i = 0; i<options.length; i++) {
             options[i].setAlpha(1);
@@ -323,7 +288,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         newTurn();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void UpdateUI() {
         //Monster
         monsterHealthBar.setProgress(monster.getHealth());
@@ -343,8 +307,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         //Player
         float alpha = 0f;
         playerHealthBar.setProgress(player.getHealth());
-
-
 
         skill1CD.setText(String.valueOf(player.skillsCoolDown[0]));
         alpha = (player.skillsCoolDown[0] == 0) ? 0f: 0.8f;
@@ -368,23 +330,15 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
         //Timer
         timer.setText(String.valueOf(Math.round(player.getTimeLeft()/1000)));
-
-
-
     }
 
     public void RenderNewQuestion() {
-
-        currentQuestion = hardQuestion? questionSet.drawHardQuestion() :questionSet.randomDrawQuestion(); //draw the first question
-        if (hardQuestion) { hardQuestion = false;}
+        currentQuestion = questionSet.randomDrawQuestion(); //draw the first question
         questionLocation.setText(currentQuestion.getQuestion());
         optionA.setText(currentQuestion.getAnsBank().get(0));
         optionB.setText(currentQuestion.getAnsBank().get(1));
         optionC.setText(currentQuestion.getAnsBank().get(2));
         optionD.setText(currentQuestion.getAnsBank().get(3));
-        if (scrambleOptions) {
-            ScrambleAnswer();
-        }
     }
 
     public void HideIncorrectOption() {
@@ -419,52 +373,43 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             if (monster.getAbilityCast(i)) {
                 switch (monster.getAbilityID(i)) {
                     case -1:
-//                        System.out.println("Monster Debug: Null Ability");
+                        System.out.println("Monster Debug: Null Ability");
                         break;
                     case 0:
                         player.underAttack(monster.getDamage());
-//                        System.out.println("Monster Debug: Normal Attack.");
+                        System.out.println("Monster Debug: Normal Attack.");
                         break;
                     case 1:
-//                        System.out.println("Monster Debug: Decreasing answering time.");
-                        player.timeOffset = -10000;
-                        System.out.println("added time offset");
+                        // TODO: call relative function
+                        System.out.println("Monster Debug: Decreasing answering time.");
                         break;
                     case 2:
-//                        System.out.println("Monster Debug: Increasing question difficulty.");
-                        hardQuestion = true;
+                        // TODO: call relative function
+                        System.out.println("Monster Debug: Increasing question difficulty.");
                         break;
                     case 3:
-//                        System.out.println("Monster Debug: Increasing player skill CD.");
+                        // TODO: call relative function
+                        System.out.println("Monster Debug: Increasing player skill CD.");
                         player.DelayPlayerCD();
                         break;
                     case 4:
-//                        System.out.println("Monster Debug: Scrambling Answer.");
-                        scrambleOptions = true;
+                        // TODO: call relative function
+                        System.out.println("Monster Debug: Scrambling Answer.");
                         break;
                     case 5:
+                        // TODO: call relative function
                         System.out.println("Monster Debug: Locking Player Skills.");
-                        player.skillLockRounds = 2;
-                        updateSkillsLock();
                         break;
                     case 6:
                         // TODO: call relative function
-//                        System.out.println("Monster Debug: Double-edge Sword.");
-                        player.doubleEdgeSword = true;
+                        System.out.println("Monster Debug: Double-edge Sword.");
                         break;
                     default:
-//                        System.out.println("Monster Debug: Error abilityID.");
+                        System.out.println("Monster Debug: Error abilityID.");
                 }
                 monster.setAbilityCast(i, false);
             }
         }
-    }
-
-    public void ScrambleAnswer() {
-        for (int i = 0; i < options.length; i++) {
-            options[i].setText("%#*@^&&*#@^&$*^FHFH*@&#@*(&$");
-        }
-        scrambleOptions = false;
     }
 
     //  Update UI when new monster is spawned

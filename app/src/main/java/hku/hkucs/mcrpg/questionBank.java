@@ -5,9 +5,9 @@ import java.util.*;
 
 public class questionBank {
     ArrayList<questionStruct> questionBank = new ArrayList<questionStruct>();
-    ArrayList<questionStruct> hardQuestionBank = new ArrayList<questionStruct>();
+    ArrayList<questionStruct> hardnessQuestionBank = new ArrayList<questionStruct>();
     int generalPosition = 0;
-    int hardQuestionPosition = 0;
+    int hardnessPosition = 0;
     questionStruct question1 = new questionStruct();
     questionStruct question2 = new questionStruct();
     questionStruct question3 = new questionStruct();
@@ -49,7 +49,7 @@ public class questionBank {
     public void constructingHardnessQuestion(){
         for (int i = 0; i < questionBank.size(); i++) {
             if (questionBank.get(i).getDifficulty() == 5) {
-                hardQuestionBank.add(questionBank.get(i));
+                hardnessQuestionBank.add(questionBank.get(i));
             }
         }
     }
@@ -58,7 +58,7 @@ public class questionBank {
         infoBase();
         constructingHardnessQuestion();
         Collections.shuffle(questionBank);
-        Collections.shuffle(hardQuestionBank);
+        Collections.shuffle(hardnessQuestionBank);
     }
     //checking if the answer is correct
     public boolean evaluation(int option, questionStruct QuestionInFunction) {
@@ -81,12 +81,9 @@ public class questionBank {
         return questionBank.get(generalPosition-1);
     }
     //same as drawing question from general questionSet
-    public questionStruct drawHardQuestion() {
-        hardQuestionPosition++;
-        if(hardQuestionPosition >= hardQuestionBank.size() - 1) {
-            hardQuestionPosition = 1;
-        }
-        return  hardQuestionBank.get(hardQuestionPosition-1);
+    public questionStruct sameHardnessQuestion() {
+        hardnessPosition++;
+        return  hardnessQuestionBank.get(hardnessPosition-1);
     }
     //invoke this class
     public void buildingQuestionSet() {

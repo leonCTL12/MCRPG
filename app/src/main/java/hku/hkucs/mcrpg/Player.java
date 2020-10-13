@@ -4,8 +4,6 @@ import android.os.CountDownTimer;
 
 public class Player {
 
-    public boolean doubleEdgeSword = false;
-    public int skillLockRounds = 0;
     private int health = 100;
     public int getHealth() {
         return  health;
@@ -17,7 +15,7 @@ public class Player {
         return timeLeft;
     }
     private long timeAvailablePerQuestion = 30000; //That is 30 sec
-    public long timeOffset = 0; //Set this to negative value to decrease player's answer time
+    private long additionTime = 0;
     public boolean heal;
 
 
@@ -42,18 +40,11 @@ public class Player {
         if (heal) {
             heal(damageDealt);
         }
-        if (doubleEdgeSword) {
-            underAttack(damageDealt);
-            doubleEdgeSword = false;
-        }
         return damageDealt;
     }
 
     public void heal(float healAmount) {
         health+=healAmount;
-        if (health > 100) {
-            health = 100;
-        }
         heal = false;
     }
 
@@ -77,14 +68,10 @@ public class Player {
                 skillsCoolDown[i]--;
             }
         }
-
-        if (skillLockRounds > 0) {
-            MainActivity.getInstance().updateSkillsLock();
-            skillLockRounds--;
-        }
 //Add back timer later
        stopTimer();
         heal = false; //To reset the effect if player use heal this turn;
+        additionTime = 0;
         timeAvailablePerQuestion = 30000; //To reset the effect if player use lengthen answer time this turn;
     }
 
@@ -94,34 +81,26 @@ public class Player {
         System.out.println("updated skill3 cd");
     }
 
-    public void startTimer(int countDownTime) {
-        countDownTimer = new CountDownTimer(countDownTime,1000) {
+    public void startTimer() {
+        countDownTimer = new CountDownTimer(timeLeft,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-//
-                timeLeft = timeOffset +  millisUntilFinished;
+                timeLeft = additionTime +  millisUntilFinished;
+//                System.out.println("TimeLeft:" + timeLeft);
 
-
-                if (timeLeft <= 0) {
-                        stopTimer();
-                        MainActivity.getInstance().EndTurn(0);
-                    }
-
-                }
-
-
+            }
 
             @Override
             public void onFinish() {
+//                System.out.println("Time's up!");
                 MainActivity.getInstance().EndTurn(0);
             }
-        };
+        }.start();
     }
 
     public void stopTimer() {
         countDownTimer.cancel();
-        timeOffset = 0;
-        System.out.println("Time offset reset");
+
     }
 
     public void resetTimer() {
