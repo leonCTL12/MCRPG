@@ -48,6 +48,7 @@ public class MonsterSet {
 
     //  Called when a monster is defected
     public void defected() {
+        System.out.println("Defected!!!!");
         if (++currentMonsterIndex >= 3) {
             currentMonsterIndex = 0;
             currentStage++;

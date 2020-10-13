@@ -162,7 +162,7 @@ public class Monster {
     //
     //  return -1 if the monster is dead
     //         1  if the monster is not dead
-    public int attack(int damageValue) {
+    public int underAttack(int damageValue) {
         health -= damageValue;
         if (health <= 0) return -1;
         else return 1;
@@ -174,6 +174,8 @@ public class Monster {
         for (int i = 0; i < 4; i++) {
             if (--abilityCD[i] <= 0) {
                 abilityCast[i] = true;
+                System.out.println(abilityCD == null);
+                System.out.println(abilityCD_ADJ == null);
                 abilityCD[i] = abilityCD_ADJ[i];
             }
         }

@@ -2,6 +2,7 @@ package hku.hkucs.mcrpg;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +11,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.net.Inet4Address;
+
 public class MainActivity extends AppCompatActivity { //Leon: this script will act as something like game manager in Unity
+
+    private static MainActivity instance;
+
+    public  static  MainActivity getInstance() {
+        return  instance;
+    }
 
     //Monster
     MonsterSet monsterSet;
@@ -46,15 +55,16 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     TextView skill3CD;
     TextView skill4CD;
 
+
     //Timer
     TextView timer;
     Thread timerThread;
     Thread updateThread;
 
     //Question
-    TextView Questionlocation;
-    questionbank questionset;
-    questionstruct currquestion;
+    TextView questionLocation;
+    questionBank questionSet;
+    questionStruct currentQuestion;
 
 
 
@@ -64,6 +74,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        instance = this;
 
         // initialize
         //Monster
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         monsterImage = findViewById(R.id.imageView_monster);
         effect_fire1 = findViewById(R.id.imageView_effect_fire1);
         effect_fire2 = findViewById(R.id.imageView_effect_fire2);
-        UpdateMonster();
+
 
         //Player
         player = new Player();
@@ -101,119 +113,41 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill4CD = findViewById(R.id.Skill4CD);
 
         //Timer
-        player.startTimer(); //testing timer
-        timer = findViewById(R.id.Timer);
-        timerThread = new Thread() {
 
-            @Override
-            public void run() {
-                try {
-                    while (!timerThread.isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // update TextView here!
-                                timer.setText(String.valueOf(player.getTimeLeft()));
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-        timerThread.start();
+        timer = findViewById(R.id.Timer);
+//        timerThread = new Thread() {
+//
+//            @Override
+//            public void run() {
+//                try {
+//                    while (!timerThread.isInterrupted()) {
+//                        Thread.sleep(1000);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                // update TextView here!
+//                                timer.setText(String.valueOf(player.getTimeLeft()));
+//                            }
+//                        });
+//                    }
+//                } catch (InterruptedException e) {
+//                }
+//            }
+//        };
+//        timerThread.start();
 
         //Question
-        questionset = new questionbank();
-        questionset.buildingaquestionset();// invoke the question questionbank, the question set array has been shuffled and ready to be drawn
-        currquestion = questionset.randomdrawquestion(); //draw the first question
-        Questionlocation = findViewById(R.id.textView_Question);
-        Questionlocation.setText(currquestion.getquestion());
-        optionA.setText(currquestion.getansbank().get(0));
-        optionB.setText(currquestion.getansbank().get(1));
-        optionC.setText(currquestion.getansbank().get(2));
-        optionD.setText(currquestion.getansbank().get(3));
+        questionSet = new questionBank();
+        questionSet.buildingQuestionSet();// invoke the question questionBank, the question set array has been shuffled and ready to be drawn
+        questionLocation = findViewById(R.id.textView_Question);
+
+
 
         //general
-        //Leon: Can we implement sth like unity's update by multi-threading? Will this cause any performance problem?
-        updateThread = new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    while (!updateThread.isInterrupted()) {
-                        Thread.sleep(100);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // update TextView here!
-                                System.out.println("I am still running");
-                                UpdateUI();
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-       updateThread.start();
-
-
-        // button for testing
-        Button button_attack = findViewById(R.id.button);
-        Button button_reset = findViewById(R.id.button2);
-        Button button_onFire = findViewById(R.id.button3);
-        Button button_offFire = findViewById(R.id.button4);
-
-        button_attack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                monster.attack(10);
-                if (monster.isDead()) {
-                    monsterSet.defected();
-                    UpdateMonster();
-                }
-                else {
-                    monster.endTurn();
-                    CheckAbilityCasting();
-                }
-//                UpdateUI();
-            }
-        });
-
-        button_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                monsterSet.initialize();
-                UpdateMonster();
-//                UpdateUI();
-            }
-        });
-
-        button_onFire.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                monster.setOnFire();
-
-                //Leon: 借來用下 test 野
-                player.playerStartTurn();
-
-            }
-        });
-
-        button_offFire.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                monster.setOffFire();
-
-                //Leon: 借來用下 test 野
-                player.playerEndTurn();
-
-
-            }
-        });
-
+        //Game Initialization
+        player.startTimer();
+        UpdateMonster();
+        newTurn();
 
         //Player
         optionA.setOnClickListener(new View.OnClickListener() {
@@ -221,6 +155,14 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionA");
+
+
+                if(questionSet.evaluation(0, currentQuestion)) {
+
+                    EndTurn(player.Attack());
+                } else {
+                    EndTurn(0);
+                }
             }
         });
         optionB.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +170,12 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionB");
+                if(questionSet.evaluation(1, currentQuestion)) {
+
+                    EndTurn(player.Attack());
+                } else {
+                    EndTurn(0);
+                }
             }
         });
         optionC.setOnClickListener(new View.OnClickListener() {
@@ -235,6 +183,12 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionC");
+                if(questionSet.evaluation(2, currentQuestion)) {
+
+                    EndTurn(player.Attack());
+                } else {
+                    EndTurn(0);
+                }
             }
         });
         optionD.setOnClickListener(new View.OnClickListener() {
@@ -242,6 +196,13 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 //TODO: call question evaluate answer function
                 System.out.println("Clicked OptionD");
+                if(questionSet.evaluation(3, currentQuestion)) {
+
+                    EndTurn(player.Attack());
+                } else {
+                    EndTurn(0);
+                }
+
             }
         });
         skill1.setOnClickListener(new View.OnClickListener() {
@@ -271,10 +232,46 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         });
 
 
+//Leon: Can we implement sth like unity's update by multi-threading? Will this cause any performance problem?
+        updateThread = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    while (!updateThread.isInterrupted()) {
+                        Thread.sleep(10);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // update TextView here!
+                                UpdateUI();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        updateThread.start();
+
+
+    }
 
 
 
-
+    public void EndTurn(int damage) {
+        monster.underAttack(damage);
+        if (monster.isDead()) {
+            monsterSet.defected();
+            UpdateMonster();
+        }
+        else {
+            monster.endTurn();
+            CheckAbilityCasting();
+        }
+        monster.setOffFire();
+        player.playerEndTurn();
+        newTurn();
     }
 
     public void UpdateUI() {
@@ -317,9 +314,21 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill4CD.setAlpha(alpha);
         skill4CD.setClickable(player.skillsCoolDown[3]!=0);
 
+        //Timer
+        timer.setText(String.valueOf(Math.round(player.getTimeLeft()/1000)));
+    }
 
-
-
+    public void RenderNewQuestion() {
+        currentQuestion = questionSet.randomDrawQuestion(); //draw the first question
+        questionLocation.setText(currentQuestion.getQuestion());
+        optionA.setText(currentQuestion.getAnsBank().get(0));
+        optionB.setText(currentQuestion.getAnsBank().get(1));
+        optionC.setText(currentQuestion.getAnsBank().get(2));
+        optionD.setText(currentQuestion.getAnsBank().get(3));
+    }
+    public void newTurn() {
+        RenderNewQuestion();
+        player.playerStartTurn();
     }
 
     //  Called when every answer is made, either right or wrong
@@ -400,5 +409,9 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             ability4_name.setVisibility(View.VISIBLE);
             ability4_cd.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void GameOver() {
+         startActivity(new Intent(MainActivity.this, DealthPopUp.class));
     }
 }

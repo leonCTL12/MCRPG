@@ -30,20 +30,23 @@ public class Player {
 
     public void underAttack(int damage) {
             health -= damage;
-            if (health < 0) {
+            System.out.println("Health = " + health);
+            if (health <= 0) {
                 //TODO: do sth to notify the player
                 System.out.println("You are dead");
+                MainActivity.getInstance().GameOver();
+
             }
     }
 
     //Attack will only be called when the player answer the correct answer
-    public void Attack() {
-        float damageDealt = maximumAttackDamage * (timeAvailablePerQuestion - timeLeft)/timeAvailablePerQuestion;
-        //TODO: call monster's receive damage method
-
+    public int Attack() {
+        int damageDealt = Math.round(maximumAttackDamage * timeLeft/timeAvailablePerQuestion);
+        System.out.println("Damage Dealt: "+ damageDealt);
         if (heal) {
             heal(damageDealt);
         }
+        return damageDealt;
     }
 
     public void heal(float healAmount) {
@@ -62,7 +65,6 @@ public class Player {
         for (int i = 0; i < 4; i++) {
             if (skillsCoolDown[i] > 0) {
                 skillsCoolDown[i]--;
-                System.out.println("cool down updated");
             }
         }
 //Add back timer later
@@ -84,26 +86,26 @@ public class Player {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeft = additionTime +  millisUntilFinished;
-                //TODO: update the text in the timer with this timer UI;
+//                System.out.println("TimeLeft:" + timeLeft);
+
             }
 
             @Override
             public void onFinish() {
-                System.out.println("Time's up!");
-                //TODO: randomly choose a answer for the player when he is run out of time
+//                System.out.println("Time's up!");
+                MainActivity.getInstance().EndTurn(0);
             }
         }.start();
     }
 
     public void stopTimer() {
         countDownTimer.cancel();
-        Attack();
+
     }
 
     public void resetTimer() {
         timeLeft = timeAvailablePerQuestion;
-       startTimer();
-
+        countDownTimer.start();
     }
 
 
