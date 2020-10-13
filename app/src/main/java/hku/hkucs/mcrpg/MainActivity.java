@@ -448,7 +448,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                         updateSkillsLock();
                         break;
                     case 6:
-                        // TODO: call relative function
 //                        System.out.println("Monster Debug: Double-edge Sword.");
                         player.doubleEdgeSword = true;
                         break;
@@ -462,7 +461,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     public void ScrambleAnswer() {
         for (int i = 0; i < options.length; i++) {
-            options[i].setText("%#*@^&&*#@^&$*^FHFH*@&#@*(&$");
+            options[i].setText("%#*@^&&*#@^&$*@&#@*(&$");
         }
         scrambleOptions = false;
     }
@@ -470,7 +469,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     //  Update UI when new monster is spawned
     public void UpdateMonster() {
         monster = monsterSet.getCurrentMonster();
-        stage.setText("Stage " + String.valueOf(monsterSet.getCurrentStage()));
+        stage.setText("Level " + String.valueOf(monsterSet.getCurrentStage()));
         monsterName.setText(monster.getName());
         monsterImage.setImageResource(getResources().getIdentifier(monster.getImagePath(), "drawable", getPackageName()));
         ability1_name.setText(monster.getAbilityName(0));

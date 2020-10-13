@@ -21,7 +21,7 @@ public class Player {
     public boolean heal;
 
 
-    private int[] skillsOriginalCD = new int[]{8,10,6,4};
+    private int[] skillsOriginalCD = new int[]{8,9,6,4};
     public int[] skillsCoolDown = {skillsOriginalCD[0], skillsOriginalCD[1], skillsOriginalCD[2], skillsOriginalCD[3]};
 
     public void underAttack(int damage) {

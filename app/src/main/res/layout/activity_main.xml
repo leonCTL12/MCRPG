@@ -5,14 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/bgimg"
+    >
 
     <TextView
         android:id="@+id/textView_monsterName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
+        android:fontFamily="@font/pdark"
         android:text="monsterName"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,6 +29,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="42dp"
         android:text="Normal Attack"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
@@ -35,6 +40,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:text="CD 1"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability1_name" />
 
@@ -46,6 +52,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="17dp"
         android:text="Ability 2"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability1_cd" />
 
@@ -56,6 +63,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:text="CD 2"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability2_name" />
 
@@ -65,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
         android:text="Ability 3"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
@@ -73,6 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CD 4"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability3_name" />
 
@@ -82,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Ability 4"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability3_cd" />
 
@@ -90,6 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CD 6"
+        android:textColor="#FF0000"
         app:layout_constraintStart_toEndOf="@+id/imageView_monster"
         app:layout_constraintTop_toBottomOf="@+id/textView_ability4_name" />
 
@@ -130,15 +142,15 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="332dp"
+        android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_monsterName" />
 
@@ -162,16 +174,10 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:text="OptionA" />
-
-        <Button
-            android:id="@+id/OptionB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:text="OptionB" />
+            android:background="@drawable/btnui"
+            android:text="OptionA"
+            android:textColor="#FFFFFF"
+            />
 
         <Button
             android:id="@+id/OptionC"
@@ -180,7 +186,10 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:text="OptionC" />
+            android:background="@drawable/btnui"
+            android:text="OptionC"
+            android:textColor="#FFFFFF"
+            />
 
         <Button
             android:id="@+id/OptionD"
@@ -189,7 +198,24 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:text="OptionD" />
+            android:background="@drawable/btnui"
+            android:text="OptionD"
+            android:textColor="#FFFFFF"
+           />
+
+        <Button
+            android:id="@+id/OptionB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btnui"
+            android:text="OptionB"
+            android:textColor="#FFFFFF"
+
+            />
+
     </LinearLayout>
 
     <LinearLayout
@@ -213,17 +239,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/question_mark" />
 
             <TextView
                 android:id="@+id/Skill1CD"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:clickable="true"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="0"
+                android:textColor="#B88231"
+                android:textColorLink="#3438F1"
                 android:textSize="60sp" />
 
             <ImageView
@@ -246,17 +274,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/delay" />
 
             <TextView
                 android:id="@+id/Skill2CD"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:clickable="true"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="0"
+                android:textColor="#B88231"
+                android:textColorLink="#3438F1"
                 android:textSize="60sp" />
 
             <ImageView
@@ -278,17 +308,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/time" />
 
             <TextView
                 android:id="@+id/Skill3CD"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:clickable="true"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="0"
+                android:text="9"
+
+                android:textColor="#B88231"
+                android:textColorLink="#3438F1"
                 android:textSize="60sp" />
 
             <ImageView
@@ -310,17 +343,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/heal" />
 
             <TextView
                 android:id="@+id/Skill4CD"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:clickable="true"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="0"
+                android:textColor="#B88231"
+                android:textColorLink="#3438F1"
                 android:textSize="60sp" />
 
             <ImageView
@@ -338,7 +373,7 @@
         android:id="@+id/PlayerHP"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="350sp"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -347,10 +382,11 @@
 
     <TextView
         android:id="@+id/Timer"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
+        android:fontFamily="@font/pdark"
         android:gravity="center_horizontal|center_vertical"
-        android:text="0"
+        android:text="29"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
@@ -365,6 +401,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:textSize="20sp"
+        android:fontFamily="@font/motioncontrol"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -374,10 +411,12 @@
         android:id="@+id/textView_stage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/pdark"
         android:text="Stage 1"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
