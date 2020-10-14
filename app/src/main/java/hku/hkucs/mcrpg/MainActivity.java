@@ -281,8 +281,12 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         };
         updateThread.start();
 
+        //Leon: Let's have some bgm
+        Intent intent = new Intent(MainActivity.this, BackgroundMusicService.class);
+        startService(intent);
 
     }
+
 
     public void updateSkillsLock() {
         if (player.skillLockRounds == 1) {
