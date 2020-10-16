@@ -180,8 +180,6 @@ public class Monster {
         for (int i = 0; i < 4; i++) {
             if (--abilityCD[i] <= 0) {
                 abilityCast[i] = true;
-//                System.out.println(abilityCD == null);
-//                System.out.println(abilityCD_ADJ == null);
                 abilityCD[i] = abilityCD_ADJ[i];
             }
         }

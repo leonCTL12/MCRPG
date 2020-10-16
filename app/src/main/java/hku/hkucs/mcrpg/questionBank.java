@@ -43,21 +43,29 @@ public class questionBank {
         questionBank.add(question8);
         questionBank.add(question9);
         questionBank.add(question10);
+        System.out.println("Q bank size in info base:" + questionBank.size());
     }
 
     //finding the question with difficulty 5
     public void constructingHardnessQuestion(){
         for (int i = 0; i < questionBank.size(); i++) {
             if (questionBank.get(i).getDifficulty() == 5) {
+                questionBank.remove(questionBank.get(i)); //Leon: I think the normal question bank should not contain hard question
                 hardQuestionBank.add(questionBank.get(i));
             }
         }
     }
     //shuffling the questionSet
     public void shuffling() {
-        infoBase();
         constructingHardnessQuestion();
         Collections.shuffle(questionBank);
+
+        //For testing
+        System.out.println("Q Bank size = "+questionBank.size());
+        for (int i = 0; i< questionBank.size(); i++) {
+            System.out.println(questionBank.get(i).question);
+        }
+
         Collections.shuffle(hardQuestionBank);
     }
     //checking if the answer is correct
@@ -74,6 +82,8 @@ public class questionBank {
     }
     //after shuffling the questionSet, everytime we call this method, it will return the next question, so it doesnt repeat
     public questionStruct randomDrawQuestion(){
+        System.out.println("drawn new Q; General Pos = " + generalPosition);
+
         generalPosition++;
         if (generalPosition >= questionBank.size()-1) {
             generalPosition = 1;
@@ -90,6 +100,7 @@ public class questionBank {
     }
     //invoke this class
     public void buildingQuestionSet() {
+        System.out.println("Building Q Set");
         infoBase();
         shuffling();
     }

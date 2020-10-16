@@ -1,6 +1,8 @@
 package hku.hkucs.mcrpg;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 
 public class Player {
 
@@ -26,9 +28,7 @@ public class Player {
 
     public void underAttack(int damage) {
             health -= damage;
-            System.out.println("Health = " + health);
             if (health <= 0) {
-                //TODO: do sth to notify the player
                 System.out.println("You are dead");
                 MainActivity.getInstance().GameOver();
 
@@ -38,7 +38,6 @@ public class Player {
     //Attack will only be called when the player answer the correct answer
     public int Attack() {
         int damageDealt = Math.round(maximumAttackDamage * timeLeft/timeAvailablePerQuestion);
-        System.out.println("Damage Dealt: "+ damageDealt);
         if (heal) {
             heal(damageDealt);
         }
@@ -47,6 +46,7 @@ public class Player {
             doubleEdgeSword = false;
         }
         return damageDealt;
+
     }
 
     public void heal(float healAmount) {
@@ -121,7 +121,6 @@ public class Player {
     public void stopTimer() {
         countDownTimer.cancel();
         timeOffset = 0;
-        System.out.println("Time offset reset");
     }
 
     public void resetTimer() {

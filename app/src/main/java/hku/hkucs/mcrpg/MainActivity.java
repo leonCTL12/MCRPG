@@ -5,8 +5,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.net.Inet4Address;
 import java.util.Random;
@@ -71,10 +77,12 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     ImageView[] locks;
 
 
-    //Timer
+    //General
     TextView timer;
+    TextView announcement;
     Thread timerThread;
     Thread updateThread;
+    private SoundEffectManager soundFX;
 
     //Question
     TextView questionLocation;
@@ -132,7 +140,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         lock3 = findViewById(R.id.lock3);
         lock4 = findViewById(R.id.lock4);
 
-
         options = new Button[]{optionA, optionB, optionC, optionD};
         locks= new ImageView[]{lock1,lock2,lock3,lock4};
 
@@ -165,9 +172,11 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         questionSet.buildingQuestionSet();// invoke the question questionBank, the question set array has been shuffled and ready to be drawn
         questionLocation = findViewById(R.id.textView_Question);
 
-
-
         //general
+        announcement = findViewById(R.id.Announcement);
+        soundFX = new SoundEffectManager(this);
+
+
         //Game Initialization
         player.startTimer(30000);
         UpdateMonster();
@@ -181,9 +190,12 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
 
                 if(questionSet.evaluation(0, currentQuestion)) {
-
+                    soundFX.PlayCorrectSoundFX();
+                    optionA.setTextColor(Color.GREEN);
                     EndTurn(player.Attack());
                 } else {
+                    soundFX.PlayWrongSoundFX();
+                    optionA.setTextColor(Color.RED);
                     EndTurn(0);
                 }
             }
@@ -193,9 +205,13 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 System.out.println("Clicked OptionB");
                 if(questionSet.evaluation(1, currentQuestion)) {
-
+                    soundFX.PlayCorrectSoundFX();
+                    optionB.setTextColor(Color.GREEN);
                     EndTurn(player.Attack());
                 } else {
+                    soundFX.PlayWrongSoundFX();
+                    optionB.setTextColor(Color.RED);
+
                     EndTurn(0);
                 }
             }
@@ -205,9 +221,13 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 System.out.println("Clicked OptionC");
                 if(questionSet.evaluation(2, currentQuestion)) {
-
+                    optionC.setTextColor(Color.GREEN);
+                    soundFX.PlayCorrectSoundFX();
                     EndTurn(player.Attack());
                 } else {
+                    optionC.setTextColor(Color.RED);
+
+                    soundFX.PlayWrongSoundFX();
                     EndTurn(0);
                 }
             }
@@ -217,9 +237,14 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 System.out.println("Clicked OptionD");
                 if(questionSet.evaluation(3, currentQuestion)) {
+                    optionD.setTextColor(Color.GREEN);
 
+                    soundFX.PlayCorrectSoundFX();
                     EndTurn(player.Attack());
                 } else {
+                    optionD.setTextColor(Color.RED);
+
+                    soundFX.PlayWrongSoundFX();
                     EndTurn(0);
                 }
 
@@ -281,6 +306,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         };
         updateThread.start();
 
+
+
         //Leon: Let's have some bgm
         Intent intent = new Intent(MainActivity.this, BackgroundMusicService.class);
         startService(intent);
@@ -299,32 +326,73 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             System.out.println("get Locked");
             for (int i = 0; i < locks.length; i++) {
                 locks[i].setClickable(true);
-                locks[i].setAlpha((float)player.skillLockRounds/3);
+                locks[i].setAlpha((float)player.skillLockRounds/2);
             }
         }
     }
 
+    public void AnnouncementAnimation(String content) {
+        announcement.setText(content);
+        announcement.setAlpha(1f);
+        YoYo.with(Techniques.Flash)
+                .duration(3000)
+               .playOn(announcement);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                announcement.setAlpha(0f);
+            }
+        }, 3100);
+    }
 
-
-    public void EndTurn(int damage) {
+    public void EndTurn(final int damage) {
         player.playerEndTurn();
-        monster.underAttack(damage);
-        if (monster.isDead()) {
-            monsterSet.defected();
-            UpdateMonster();
+        AnnouncementAnimation("Player's attack");
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if(damage > 0) {
+                    announcement.setAlpha(0f);
+                   MonsterTurn(damage);
+                }
+            }
+        }, 3100);
+
+        if (damage<=0) {
+            MonsterTurn(0);
         }
-        else {
-            monster.endTurn();
-            CheckAbilityCasting();
-        }
-        monster.setOffFire();
+
 
         for (int i = 0; i<options.length; i++) {
             options[i].setAlpha(1);
             options[i].setClickable(true);
         }
+    }
 
-        newTurn();
+    private void MonsterTurn(int damage) {
+        monster.underAttack(damage);
+        if (monster.isDead()) {
+            monsterSet.defected();
+            UpdateMonster();
+            newTurn();
+        }
+        else {
+            AnnouncementAnimation("Monster's Turn");
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    monster.endTurn();
+                    CheckAbilityCasting();
+                    newTurn();
+
+                }
+            }, 3100);
+
+        }
+        monster.setOffFire();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -347,8 +415,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         //Player
         float alpha = 0f;
         playerHealthBar.setProgress(player.getHealth());
-
-
 
         skill1CD.setText(String.valueOf(player.skillsCoolDown[0]));
         alpha = (player.skillsCoolDown[0] == 0) ? 0f: 0.8f;
@@ -373,11 +439,14 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         //Timer
         timer.setText(String.valueOf(Math.round(player.getTimeLeft()/1000)));
 
-
-
     }
 
     public void RenderNewQuestion() {
+        System.out.println("New Question");
+        player.playerStartTurn();
+        for (int i = 0; i<options.length; i++) {
+            options[i].setTextColor(Color.WHITE);
+        }
 
         currentQuestion = hardQuestion? questionSet.drawHardQuestion() :questionSet.randomDrawQuestion(); //draw the first question
         if (hardQuestion) { hardQuestion = false;}
@@ -413,54 +482,70 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     public void newTurn() {
         RenderNewQuestion();
-        player.playerStartTurn();
+        AnnouncementAnimation("Player's Turn");
     }
 
     //  Called when every answer is made, either right or wrong
     //  Check if any ability is needed to cast
     public void CheckAbilityCasting() {
-        for (int i = 0; i < 4; i++) {
-            if (monster.getAbilityCast(i)) {
-                switch (monster.getAbilityID(i)) {
-                    case -1:
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                for (int i = 0; i < 4; i++) {
+                    if (monster.getAbilityCast(i)) {
+                        switch (monster.getAbilityID(i)) {
+                            case -1:
 //                        System.out.println("Monster Debug: Null Ability");
-                        break;
-                    case 0:
-                        player.underAttack(monster.getDamage());
+                                break;
+                            case 0:
+                                player.underAttack(monster.getDamage());
 //                        System.out.println("Monster Debug: Normal Attack.");
-                        break;
-                    case 1:
+                                break;
+                            case 1:
 //                        System.out.println("Monster Debug: Decreasing answering time.");
-                        player.timeOffset = -10000;
-                        System.out.println("added time offset");
-                        break;
-                    case 2:
+                                player.underAttack(monster.getDamage());
+                                player.timeOffset = -10000;
+                                System.out.println("added time offset");
+                                break;
+                            case 2:
 //                        System.out.println("Monster Debug: Increasing question difficulty.");
-                        hardQuestion = true;
-                        break;
-                    case 3:
+                                player.underAttack(monster.getDamage());
+                                hardQuestion = true;
+                                break;
+                            case 3:
 //                        System.out.println("Monster Debug: Increasing player skill CD.");
-                        player.DelayPlayerCD();
-                        break;
-                    case 4:
+                                player.underAttack(monster.getDamage());
+                                player.DelayPlayerCD();
+                                break;
+                            case 4:
 //                        System.out.println("Monster Debug: Scrambling Answer.");
-                        scrambleOptions = true;
-                        break;
-                    case 5:
-                        System.out.println("Monster Debug: Locking Player Skills.");
-                        player.skillLockRounds = 2;
-                        updateSkillsLock();
-                        break;
-                    case 6:
+                                player.underAttack(monster.getDamage());
+                                scrambleOptions = true;
+                                break;
+                            case 5:
+                                player.underAttack(monster.getDamage());
+                                System.out.println("Monster Debug: Locking Player Skills.");
+                                player.skillLockRounds = 2;
+                                updateSkillsLock();
+                                break;
+                            case 6:
 //                        System.out.println("Monster Debug: Double-edge Sword.");
-                        player.doubleEdgeSword = true;
-                        break;
-                    default:
+                                player.underAttack(monster.getDamage());
+                                player.doubleEdgeSword = true;
+                                break;
+                            default:
 //                        System.out.println("Monster Debug: Error abilityID.");
+                        }
+                        monster.setAbilityCast(i, false);
+                    }
                 }
-                monster.setAbilityCast(i, false);
+
             }
-        }
+        }, 3100);
+
+
     }
 
     public void ScrambleAnswer() {

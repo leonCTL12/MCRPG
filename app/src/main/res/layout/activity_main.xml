@@ -175,9 +175,9 @@
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:background="@drawable/btnui"
+            android:shadowColor="#FF0C0C"
             android:text="OptionA"
-            android:textColor="#FFFFFF"
-            />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/OptionC"
@@ -399,9 +399,9 @@
         android:id="@+id/textView_Question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center_vertical"
-        android:textSize="20sp"
         android:fontFamily="@font/motioncontrol"
+        android:gravity="center_horizontal|center_vertical"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -417,6 +417,20 @@
         android:fontFamily="@font/pdark"
         android:text="Stage 1"
         android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Announcement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="1"
+        android:fontFamily="@font/pdark"
+        android:text="Player's Attack"
+        android:textColor="#FF0000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

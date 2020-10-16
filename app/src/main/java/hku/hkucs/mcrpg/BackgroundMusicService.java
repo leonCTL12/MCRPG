@@ -20,7 +20,7 @@ public class BackgroundMusicService extends Service {
         mediaPlayer = MediaPlayer.create(this, R.raw.bgm_1);
         System.out.println("Playing");
         mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(100,100);
+        mediaPlayer.setVolume(30,30);
         mediaPlayer.start();
     }
 }
