@@ -51,7 +51,7 @@ public class questionBank {
         question27.setter("Gaming", 3, "When did the most famous online game \"League of Legends\" be released?", "2010" , "2012" ,"2009", "2013", 2);
         question28.setter("Youtuber", 1, "What is the name of the most subscribed youtube channel in 2018?", "T-Series", "MrBeast" , "Vanossgaming", "Pewdiepie", 3);
         question29.setter("Technology", 3, "What autonomous driving level has Tesla achieved in 2019?", "1", "2", "3" ,"4", 1 );
-        question30.setter("Botany", 1 , "How much water is in Apple(fruit)?" , "50%" , "25%" , "75%" , "10", 1);
+        question30.setter("Botany", 1 , "How much water is in Apple(fruit)?" , "50%" , "25%" , "75%" , "10%", 1);
             
         //for further improvement, can build another arraylist of problems for hardness level 5 instead of mixing it in general questionSet
         questionBank.add(question1);
