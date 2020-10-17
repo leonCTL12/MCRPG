@@ -18,6 +18,26 @@ public class questionBank {
     questionStruct question8 = new questionStruct();
     questionStruct question9 = new questionStruct();
     questionStruct question10 = new questionStruct();
+    questionStruct question11 = new questionStruct();
+    questionStruct question12 = new questionStruct();
+    questionStruct question13 = new questionStruct();
+    questionStruct question14 = new questionStruct();
+    questionStruct question15 = new questionStruct();
+    questionStruct question16 = new questionStruct();
+    questionStruct question17 = new questionStruct();
+    questionStruct question18 = new questionStruct();
+    questionStruct question19 = new questionStruct();
+    questionStruct question20 = new questionStruct();
+    questionStruct question21 = new questionStruct();
+    questionStruct question22 = new questionStruct();
+    questionStruct question23 = new questionStruct();
+    questionStruct question24 = new questionStruct();
+    questionStruct question25 = new questionStruct();
+    questionStruct question26 = new questionStruct();
+    questionStruct question27 = new questionStruct();
+    questionStruct question28 = new questionStruct();
+    questionStruct question29 = new questionStruct();
+    questionStruct question30 = new questionStruct();
 
 
     //question bank, hardcoded
