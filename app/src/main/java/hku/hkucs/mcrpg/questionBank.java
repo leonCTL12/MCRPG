@@ -62,13 +62,13 @@ public class questionBank {
         question18.setter("Physics", 5, "At what speed does the Earth rotate itself at Earth's equator?", "2000 miles/h", "3000 miles/h" , "1000 miles/h", "4000 miles/h", 2);
         question19.setter("Film Studies", 1, "Who is the director of the famous movie \"Inception\"?", "James Cameron", "Christopher Nolan", "The Wachowskis", "Peter Jackson", 1);
         question20.setter("History", 2, "When did the World War II end?", "1940", "1950" , "1935" ,"1945",3);
-        question21.setter("Music", 1, "In Ed Sheeran album \"No.6 Collaboration\", who did he collaborate with in the song \"Beautiful People\"?", "Justin Bieber", "Khalid", "Cardi B", "Bruno Mars", 1);    
+        question21.setter("Music", 1, "Who did Ed Sheeran collaborate with in the song \"Beautiful People\"?", "Justin Bieber", "Khalid", "Cardi B", "Bruno Mars", 1);    
         question22.setter("Mathematics", 2, "What is the correct answer of pi in 6 deciml places?", "3.14159266", "3.14159265", "3.14159263", "3.14159264", 1);
         question23.setter("English", 1, "What is the meaning of the word \"hangry\"?", "handing angrily" , "handling angrily" , "hungry angrily" ,"hanging angrily", 2);
         question24.setter("French", 1, "What does the word \"Oui\" mean in French?", "Yes", "No", "He", "She", 0);
         question25.setter("Geography", 2, "What is the name of the shortest river in the world?" , "Roe River", "D River", "Amur" , "Amon", 0);
         question26.setter("Animal Studies", 3 , "What is the name of the smallest owl?", "Houdini", "Elf Owl", "Barn Owl", "Snowy Owl", 1 );
-        question27.setter("Gaming", 3, "When did the most famous online game \"League of Legends\" be released?", "2010" , "2012" ,"2009", "2013", 2);
+        question27.setter("Gaming", 3, "When did the famous game \"League of Legends\" be released?", "2010" , "2012" ,"2009", "2013", 2);
         question28.setter("Youtuber", 1, "What is the name of the most subscribed youtube channel in 2018?", "T-Series", "MrBeast" , "Vanossgaming", "Pewdiepie", 3);
         question29.setter("Technology", 3, "What autonomous driving level has Tesla achieved in 2019?", "1", "2", "3" ,"4", 1 );
         question30.setter("Botany", 1 , "How much water is in Apple(fruit)?" , "50%" , "25%" , "75%" , "10%", 1);
