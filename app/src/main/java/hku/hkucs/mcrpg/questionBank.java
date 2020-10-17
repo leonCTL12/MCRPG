@@ -54,7 +54,7 @@ public class questionBank {
         question10.setter("English", 2, "What work is not written by William Shakespeare?", "Dracula", "Othello", "Harmlet", "Macbeth", 0);
         question11.setter("Japanese",3,"What is the romaji conversion of this Japanese hiragana \"あ\"?", "a", "i", "u" , "o", 0);
         question12.setter("Music", 4, "Who composed the piece \"Winter Wind\" ?", "Tchaikovsky" , "Chopin", "Haydn", "Bach", 1 );
-        question13.setter("Spanish", 1, "What does \"Uno\" mean in Spanish?", "4", "2" ,"3" ,"1", 3 );
+        question13.setter("Spanish", 1, "What does \"Uno\" mean in Spanish?", "4", "2" ,"3" ,"1", 3);
         question14.setter("Geography", 3, "What is the name of the smallest country in the world?", "Monaco", "Nauru", "Tuvalu","Vatican City",3);
         question15.setter("Biology", 3, "How much water does a human have in their brain approximately?", "90%" , "50%" , "60%" , "70%" , 3);  
         question16.setter("Animal Studies", 1, "What is the heart beat rate of a sloth?" ,"150bpm", "10bpm", "80bpm" , "120bpm", 2);    
