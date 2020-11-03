@@ -27,6 +27,7 @@ public class Player {
     public int[] skillsCoolDown = {skillsOriginalCD[0], skillsOriginalCD[1], skillsOriginalCD[2], skillsOriginalCD[3]};
 
     public void underAttack(int damage) {
+        MainActivity.getInstance().UnderAttackAnimation();
             health -= damage;
             if (health <= 0) {
                 System.out.println("You are dead");
@@ -44,12 +45,14 @@ public class Player {
         if (doubleEdgeSword) {
             underAttack(damageDealt);
             doubleEdgeSword = false;
+            MainActivity.getInstance().DoubleEdgeSwordIcon(false);
         }
         return damageDealt;
 
     }
 
     public void heal(float healAmount) {
+        MainActivity.getInstance().HealAnimation();
         health+=healAmount;
         if (health > 100) {
             health = 100;
@@ -102,7 +105,7 @@ public class Player {
                 timeLeft = timeOffset +  millisUntilFinished;
 
 
-                if (timeLeft <= 0) {
+                    if (timeLeft <= 0) {
                         stopTimer();
                         MainActivity.getInstance().EndTurn(0);
                     }

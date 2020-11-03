@@ -48,10 +48,14 @@ public class MonsterSet {
 
     //  Called when a monster is defected
     public void defected() {
+
         System.out.println("Defected!!!!");
         if (++currentMonsterIndex >= 3) {
+            //TODO: call change stage function (BG and Change BGM)
+
             currentMonsterIndex = 0;
             currentStage++;
+            MainActivity.getInstance().ChangeBackground(currentStage);
         }
         monsterSet[currentMonsterIndex].setHealth(100);
         monsterSet[currentMonsterIndex].setDamage(currentStage);

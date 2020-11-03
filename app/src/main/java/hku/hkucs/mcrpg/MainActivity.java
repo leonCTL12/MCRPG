@@ -22,6 +22,10 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Text;
+
+import java.lang.annotation.Target;
 import java.net.Inet4Address;
 import java.util.Random;
 
@@ -53,6 +57,11 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     ImageView monsterImage;
     ImageView effect_fire1;
     ImageView effect_fire2;
+    ImageView effect_hit;
+    ImageView effect_underAttack;
+    ImageView effect_knift_left;
+    ImageView effect_knift_right;
+    ImageView monster_cool_down_effect;
 
 
     //Player
@@ -75,6 +84,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     ImageView lock3;
     ImageView lock4;
     ImageView[] locks;
+    ImageView doubleEdgeSwordDebuff;
+    ImageView OnScreenEffect;
 
 
     //General
@@ -83,12 +94,17 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     Thread timerThread;
     Thread updateThread;
     private SoundEffectManager soundFX;
+    ImageView background;
 
     //Question
     TextView questionLocation;
     questionBank questionSet;
     questionStruct currentQuestion;
     Button[] options;
+
+    public int questionCount = 0;
+    public int correctCount = 0;
+    private boolean SkillCDIncreased = false;
 
 
 
@@ -118,6 +134,15 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         monsterImage = findViewById(R.id.imageView_monster);
         effect_fire1 = findViewById(R.id.imageView_effect_fire1);
         effect_fire2 = findViewById(R.id.imageView_effect_fire2);
+        effect_hit = findViewById(R.id.hitImageView);
+        effect_underAttack = findViewById(R.id.underAttackImageView);
+        effect_knift_left = findViewById(R.id.kniftLeft);
+        effect_knift_right = findViewById(R.id.knift_right);
+        doubleEdgeSwordDebuff = findViewById(R.id.DebuffIcon);
+        monster_cool_down_effect = findViewById(R.id.MonsterCoolDownDebuff);
+
+
+
 
 
         //Player
@@ -139,6 +164,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         lock2 = findViewById(R.id.lock2);
         lock3 = findViewById(R.id.lock3);
         lock4 = findViewById(R.id.lock4);
+        OnScreenEffect = findViewById(R.id.OnScreenEffect);
 
         options = new Button[]{optionA, optionB, optionC, optionD};
         locks= new ImageView[]{lock1,lock2,lock3,lock4};
@@ -175,6 +201,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         //general
         announcement = findViewById(R.id.Announcement);
         soundFX = new SoundEffectManager(this);
+        background = findViewById(R.id.BackgroundView);
 
 
         //Game Initialization
@@ -193,6 +220,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     soundFX.PlayCorrectSoundFX();
                     optionA.setTextColor(Color.GREEN);
                     EndTurn(player.Attack());
+                    correctCount++;
                 } else {
                     soundFX.PlayWrongSoundFX();
                     optionA.setTextColor(Color.RED);
@@ -208,6 +236,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     soundFX.PlayCorrectSoundFX();
                     optionB.setTextColor(Color.GREEN);
                     EndTurn(player.Attack());
+                    correctCount++;
                 } else {
                     soundFX.PlayWrongSoundFX();
                     optionB.setTextColor(Color.RED);
@@ -224,6 +253,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     optionC.setTextColor(Color.GREEN);
                     soundFX.PlayCorrectSoundFX();
                     EndTurn(player.Attack());
+                    correctCount++;
+
                 } else {
                     optionC.setTextColor(Color.RED);
 
@@ -241,6 +272,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
                     soundFX.PlayCorrectSoundFX();
                     EndTurn(player.Attack());
+                    correctCount++;
+
                 } else {
                     optionD.setTextColor(Color.RED);
 
@@ -263,6 +296,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void onClick(View v) {
                 System.out.println("Skill2");
                 monster.InreaseMonsterCD();
+                DelayCDAnimation(monster_cool_down_effect);
                 player.ResetCoolDown(1);
             }
         });
@@ -314,7 +348,38 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     }
 
+    public void DelayCDAnimation(final ImageView target) {
+        target.setAlpha(1f);
+        YoYo.with(Techniques.FadeOutUp)
+                .duration(1500)
+                .playOn(target);
 
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                target.setAlpha(0f);
+            }
+        }, 1600);
+    }
+
+
+    public void HealAnimation() {
+        System.out.println("Playing Heal Animation");
+        OnScreenEffect.setAlpha(1f);
+        YoYo.with(Techniques.FadeOutUp)
+                .duration(1500)
+                .playOn(OnScreenEffect);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                OnScreenEffect.setAlpha(0f);
+            }
+        }, 1600);
+
+
+    }
     public void updateSkillsLock() {
         if (player.skillLockRounds == 1) {
             System.out.println("Unlock");
@@ -331,12 +396,31 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         }
     }
 
+    public void UnderAttackAnimation() {
+
+        effect_underAttack.setAlpha(0.5f);
+
+
+        YoYo.with(Techniques.Flash)
+                .duration(1000)
+                .playOn(effect_underAttack);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                effect_underAttack.setAlpha(0f);
+            }
+        }, 1100);
+
+    }
+
     public void AnnouncementAnimation(String content) {
         announcement.setText(content);
         announcement.setAlpha(1f);
+
         YoYo.with(Techniques.Flash)
                 .duration(3000)
-               .playOn(announcement);
+                .playOn(announcement);
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -346,6 +430,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
     public void EndTurn(final int damage) {
+        questionCount++;
         player.playerEndTurn();
         AnnouncementAnimation("Player's attack");
 
@@ -355,7 +440,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void run() {
                 if(damage > 0) {
                     announcement.setAlpha(0f);
-                   MonsterTurn(damage);
+                   PlayerAttackAnimation(damage);
                 }
             }
         }, 3100);
@@ -371,12 +456,55 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         }
     }
 
-    private void MonsterTurn(int damage) {
-        monster.underAttack(damage);
+    private  void PlayerAttackAnimation(final int damage) {
+        effect_hit.setAlpha(1.0f);
+        effect_knift_right.setAlpha(1f);
+        effect_knift_left.setAlpha(1f);
+        YoYo.with(Techniques.BounceInLeft)
+                .duration(200)
+                .playOn(effect_knift_left);
+        YoYo.with(Techniques.BounceInRight)
+                .duration(200)
+                .playOn(effect_knift_right);
+        YoYo.with(Techniques.Shake)
+                .duration(500)
+                .playOn(monsterImage);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                effect_knift_left.setAlpha(0f);
+                effect_knift_right.setAlpha(0f);
+                effect_hit.setAlpha(0f);
+                MonsterTurn(damage);
+            }
+        }, 500);
+    }
+
+    private void MonsterTurn(final int damage) {
+
+            monster.underAttack(damage);
+
+
+
         if (monster.isDead()) {
-            monsterSet.defected();
-            UpdateMonster();
-            newTurn();
+            YoYo.with(Techniques.FadeOutUp)
+                    .duration(500)
+                    .playOn(monsterImage);
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    monsterSet.defected();
+                    YoYo.with(Techniques.Tada)
+                            .duration(1000)
+                            .playOn(monsterImage);
+                    UpdateMonster();
+                    newTurn();
+                }
+            }, 550);
+
         }
         else {
             AnnouncementAnimation("Monster's Turn");
@@ -392,7 +520,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             }, 3100);
 
         }
-        monster.setOffFire();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -413,41 +540,36 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         }
 
         //Player
-        float alpha = 0f;
         playerHealthBar.setProgress(player.getHealth());
 
-        skill1CD.setText(String.valueOf(player.skillsCoolDown[0]));
-        alpha = (player.skillsCoolDown[0] == 0) ? 0f: 0.8f;
-        skill1CD.setAlpha(alpha);
-        skill1CD.setClickable(player.skillsCoolDown[0]!=0);
 
-        skill2CD.setText(String.valueOf(player.skillsCoolDown[1]));
-        alpha = (player.skillsCoolDown[1] == 0) ? 0f: 0.8f;
-        skill2CD.setAlpha(alpha);
-        skill2CD.setClickable(player.skillsCoolDown[1]!=0);
 
-        skill3CD.setText(String.valueOf(player.skillsCoolDown[2]));
-        alpha = (player.skillsCoolDown[2] == 0) ? 0f: 0.8f;
-        skill3CD.setAlpha(alpha);
-        skill3CD.setClickable(player.skillsCoolDown[2]!=0);
+        //Debuff Icon
 
-        skill4CD.setText(String.valueOf(player.skillsCoolDown[3]));
-        alpha = (player.skillsCoolDown[3] == 0) ? 0f: 0.8f;
-        skill4CD.setAlpha(alpha);
-        skill4CD.setClickable(player.skillsCoolDown[3]!=0);
 
         //Timer
+        if (Math.round(player.getTimeLeft()/1000) < 10) {
+            timer.setTextColor(Color.RED);
+        } else {
+            timer.setTextColor(Color.BLACK);
+        }
         timer.setText(String.valueOf(Math.round(player.getTimeLeft()/1000)));
 
     }
 
+    public void DoubleEdgeSwordIcon(boolean shown) {
+        System.out.println("In Double Edge Sword Icon");
+        float alpha = shown? 1f: 0f;
+        doubleEdgeSwordDebuff.setAlpha(alpha);
+    }
+
     public void RenderNewQuestion() {
         System.out.println("New Question");
+
         player.playerStartTurn();
         for (int i = 0; i<options.length; i++) {
             options[i].setTextColor(Color.WHITE);
         }
-
         currentQuestion = hardQuestion? questionSet.drawHardQuestion() :questionSet.randomDrawQuestion(); //draw the first question
         if (hardQuestion) { hardQuestion = false;}
         questionLocation.setText(currentQuestion.getQuestion());
@@ -481,18 +603,84 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
     public void newTurn() {
-        RenderNewQuestion();
-        AnnouncementAnimation("Player's Turn");
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                RenderNewQuestion();
+                PlayerCoolDownUIUpdate();
+                AnnouncementAnimation("Player's Turn");
+
+            }
+        }, 1100);
+
+
     }
+
+    public void PlayerCoolDownIncreaseAnimation() {
+        final TextView[] CDs = {skill1CD, skill2CD, skill3CD, skill4CD};
+        for (int i = 0; i<CDs.length; i++) {
+            CDs[i].setText("+4");
+            CDs[i].setTextColor(Color.BLUE);
+            YoYo.with(Techniques.Flash)
+                    .duration(5000)
+                    .playOn(CDs[i]);
+        }
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i<CDs.length;i++) {
+                    CDs[i].setTextColor(Color.YELLOW);
+                }
+                System.out.println("Animation Ended and restore the CD");
+                PlayerCoolDownUIUpdate();
+
+            }
+        }, 6000);
+
+    }
+
+    public void PlayerCoolDownUIUpdate() {
+        float alpha = 0f;
+        final TextView[] CDs = {skill1CD, skill2CD, skill3CD, skill4CD};
+        for (int i = 0; i<CDs.length;i++) {
+            CDs[i].setTextColor(Color.YELLOW);
+        }
+        skill1CD.setText(String.valueOf(player.skillsCoolDown[0]));
+        alpha = (player.skillsCoolDown[0] == 0) ? 0f: 0.8f;
+        skill1CD.setAlpha(alpha);
+        skill1CD.setClickable(player.skillsCoolDown[0]!=0);
+
+        skill2CD.setText(String.valueOf(player.skillsCoolDown[1]));
+        alpha = (player.skillsCoolDown[1] == 0) ? 0f: 0.8f;
+        skill2CD.setAlpha(alpha);
+        skill2CD.setClickable(player.skillsCoolDown[1]!=0);
+
+        skill3CD.setText(String.valueOf(player.skillsCoolDown[2]));
+        alpha = (player.skillsCoolDown[2] == 0) ? 0f: 0.8f;
+        skill3CD.setAlpha(alpha);
+        skill3CD.setClickable(player.skillsCoolDown[2]!=0);
+
+        skill4CD.setText(String.valueOf(player.skillsCoolDown[3]));
+        alpha = (player.skillsCoolDown[3] == 0) ? 0f: 0.8f;
+        skill4CD.setAlpha(alpha);
+        skill4CD.setClickable(player.skillsCoolDown[3]!=0);
+        if (SkillCDIncreased) {
+            PlayerCoolDownIncreaseAnimation();
+            SkillCDIncreased = false;
+        }
+    }
+
 
     //  Called when every answer is made, either right or wrong
     //  Check if any ability is needed to cast
     public void CheckAbilityCasting() {
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
+//        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
                 for (int i = 0; i < 4; i++) {
                     if (monster.getAbilityCast(i)) {
                         switch (monster.getAbilityID(i)) {
@@ -506,7 +694,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                             case 1:
 //                        System.out.println("Monster Debug: Decreasing answering time.");
                                 player.underAttack(monster.getDamage());
-                                player.timeOffset = -10000;
+                                player.timeOffset = -20000;
                                 System.out.println("added time offset");
                                 break;
                             case 2:
@@ -518,6 +706,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 //                        System.out.println("Monster Debug: Increasing player skill CD.");
                                 player.underAttack(monster.getDamage());
                                 player.DelayPlayerCD();
+                                SkillCDIncreased = true;
                                 break;
                             case 4:
 //                        System.out.println("Monster Debug: Scrambling Answer.");
@@ -532,6 +721,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                                 break;
                             case 6:
 //                        System.out.println("Monster Debug: Double-edge Sword.");
+                                DoubleEdgeSwordIcon(true);
                                 player.underAttack(monster.getDamage());
                                 player.doubleEdgeSword = true;
                                 break;
@@ -542,8 +732,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     }
                 }
 
-            }
-        }, 3100);
+//            }
+//        }, 3100);
 
 
     }
@@ -553,6 +743,27 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             options[i].setText("%#*@^&&*#@^&$*@&#@*(&$");
         }
         scrambleOptions = false;
+    }
+
+    public void ChangeBackground(int stage) {
+        switch (stage) {
+            case 1:
+                background.setImageDrawable(getResources().getDrawable(R.drawable.bgimg1));
+                break;
+            case 2:
+                background.setImageDrawable(getResources().getDrawable(R.drawable.bgimg2));
+                break;
+            case 3:
+                background.setImageDrawable(getResources().getDrawable(R.drawable.bgimg3));
+                break;
+            case 4:
+                background.setImageDrawable(getResources().getDrawable(R.drawable.bgimg4));
+                break;
+            case 5:
+                background.setImageDrawable(getResources().getDrawable(R.drawable.bgimg5));
+                break;
+
+        }
     }
 
     //  Update UI when new monster is spawned

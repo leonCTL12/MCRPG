@@ -19,9 +19,6 @@ public class SoundEffectManager {
     public void PlayCorrectSoundFX() {
         System.out.println("play Correct sound fx");
        soundPool.play(correctSound,1f, 1f, 1, 0, 1.0f );
-
-
-
     }
 
     public void PlayWrongSoundFX() {
