@@ -52,7 +52,7 @@ public class Player {
     }
 
     public void heal(float healAmount) {
-        MainActivity.getInstance().HealAnimation();
+        MainActivity.getInstance().OnScreenAnimation("heal");
         health+=healAmount;
         if (health > 100) {
             health = 100;

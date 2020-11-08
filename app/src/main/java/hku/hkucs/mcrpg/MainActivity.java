@@ -29,6 +29,9 @@ import java.lang.annotation.Target;
 import java.net.Inet4Address;
 import java.util.Random;
 
+import static com.daimajia.androidanimations.library.Techniques.FadeOutDown;
+import static com.daimajia.androidanimations.library.Techniques.FadeOutUp;
+
 public class MainActivity extends AppCompatActivity { //Leon: this script will act as something like game manager in Unity
 
     private static MainActivity instance;
@@ -214,7 +217,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             @Override
             public void onClick(View v) {
                 System.out.println("Clicked OptionA");
-
+                ChangeOptionsClickability(false);
 
                 if(questionSet.evaluation(0, currentQuestion)) {
                     soundFX.PlayCorrectSoundFX();
@@ -226,12 +229,16 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     optionA.setTextColor(Color.RED);
                     EndTurn(0);
                 }
+
+
             }
         });
         optionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Clicked OptionB");
+                ChangeOptionsClickability(false);
+
                 if(questionSet.evaluation(1, currentQuestion)) {
                     soundFX.PlayCorrectSoundFX();
                     optionB.setTextColor(Color.GREEN);
@@ -249,6 +256,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             @Override
             public void onClick(View v) {
                 System.out.println("Clicked OptionC");
+                ChangeOptionsClickability(false);
+
                 if(questionSet.evaluation(2, currentQuestion)) {
                     optionC.setTextColor(Color.GREEN);
                     soundFX.PlayCorrectSoundFX();
@@ -267,6 +276,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             @Override
             public void onClick(View v) {
                 System.out.println("Clicked OptionD");
+                ChangeOptionsClickability(false);
+
                 if(questionSet.evaluation(3, currentQuestion)) {
                     optionD.setTextColor(Color.GREEN);
 
@@ -317,6 +328,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         });
 
 
+
+
 //Leon: Can we implement sth like unity's update by multi-threading? Will this cause any performance problem?
         updateThread = new Thread() {
 
@@ -348,9 +361,17 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     }
 
+    private void ChangeOptionsClickability(boolean clickable) {
+        for (int i = 0; i<options.length; i++) {
+            System.out.println("Clickablitiy changed");
+            options[i].setEnabled(clickable);
+
+        }
+    }
+
     public void DelayCDAnimation(final ImageView target) {
         target.setAlpha(1f);
-        YoYo.with(Techniques.FadeOutUp)
+        YoYo.with(FadeOutUp)
                 .duration(1500)
                 .playOn(target);
 
@@ -363,10 +384,45 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
 
-    public void HealAnimation() {
+    public void OnScreenAnimation(String effect) {
+        Techniques tech = FadeOutUp;
+        switch (effect) {
+            case "heal":
+                OnScreenEffect.setImageResource(R.drawable.heal_effect);
+                tech = FadeOutUp;
+                break;
+            case "decreaseAnsTime":
+                OnScreenEffect.setImageResource(R.drawable.decrease_ans_time);
+                tech = FadeOutDown;
+                break;
+            case "increaseCoolDown":
+                OnScreenEffect.setImageResource(R.drawable.cd_increase_effect);
+                tech = FadeOutUp;
+                break;
+            case "translate":
+                OnScreenEffect.setImageResource(R.drawable.translate_effect);
+                tech = FadeOutUp;
+                break;
+            case "scramble":
+                OnScreenEffect.setImageResource(R.drawable.scramble_effect);
+                tech = FadeOutUp;
+                break;
+            case "lock":
+                OnScreenEffect.setImageResource(R.drawable.lock_effect);
+                tech = FadeOutUp;
+                break;
+            case "double edge":
+                OnScreenEffect.setImageResource(R.drawable.double_edge_sword_effect);
+                tech = FadeOutUp;
+                break;
+
+
+
+        }
+
         System.out.println("Playing Heal Animation");
         OnScreenEffect.setAlpha(1f);
-        YoYo.with(Techniques.FadeOutUp)
+        YoYo.with(tech)
                 .duration(1500)
                 .playOn(OnScreenEffect);
 
@@ -417,6 +473,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     public void AnnouncementAnimation(String content) {
         announcement.setText(content);
         announcement.setAlpha(1f);
+
 
         YoYo.with(Techniques.Flash)
                 .duration(3000)
@@ -488,7 +545,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
 
         if (monster.isDead()) {
-            YoYo.with(Techniques.FadeOutUp)
+            YoYo.with(FadeOutUp)
                     .duration(500)
                     .playOn(monsterImage);
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -609,6 +666,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             public void run() {
                 RenderNewQuestion();
                 PlayerCoolDownUIUpdate();
+                ChangeOptionsClickability(true);
                 AnnouncementAnimation("Player's Turn");
 
             }
@@ -694,28 +752,33 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                             case 1:
 //                        System.out.println("Monster Debug: Decreasing answering time.");
                                 player.underAttack(monster.getDamage());
+                                OnScreenAnimation("decreaseAnsTime");
                                 player.timeOffset = -20000;
                                 System.out.println("added time offset");
                                 break;
                             case 2:
 //                        System.out.println("Monster Debug: Increasing question difficulty.");
                                 player.underAttack(monster.getDamage());
+                                OnScreenAnimation("translate");
                                 hardQuestion = true;
                                 break;
                             case 3:
 //                        System.out.println("Monster Debug: Increasing player skill CD.");
                                 player.underAttack(monster.getDamage());
                                 player.DelayPlayerCD();
+                                OnScreenAnimation("increaseCoolDown");
                                 SkillCDIncreased = true;
                                 break;
                             case 4:
 //                        System.out.println("Monster Debug: Scrambling Answer.");
                                 player.underAttack(monster.getDamage());
+                                OnScreenAnimation("scramble");
                                 scrambleOptions = true;
                                 break;
                             case 5:
                                 player.underAttack(monster.getDamage());
                                 System.out.println("Monster Debug: Locking Player Skills.");
+                                OnScreenAnimation("lock");
                                 player.skillLockRounds = 2;
                                 updateSkillsLock();
                                 break;
@@ -723,6 +786,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 //                        System.out.println("Monster Debug: Double-edge Sword.");
                                 DoubleEdgeSwordIcon(true);
                                 player.underAttack(monster.getDamage());
+                                OnScreenAnimation("double edge");
+
                                 player.doubleEdgeSword = true;
                                 break;
                             default:
