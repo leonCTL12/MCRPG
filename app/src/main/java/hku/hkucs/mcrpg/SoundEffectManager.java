@@ -23,11 +23,12 @@ public class SoundEffectManager {
     private static int timeSlowingDownSound;
     private static int timeRewindSound;
     private static int hardQuestionSound;
-
+    private static int monsterDebut;
+    private static int monsterDeath;
 
 
     public  SoundEffectManager(Context context) {
-        soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         correctSound = soundPool.load(context, R.raw.correctsoundfx, 1);
         wrongSound = soundPool.load(context, R.raw.wrongsoundfx, 1);
         buttonClickedSound = soundPool.load(context, R.raw.buttonclicked, 1);
@@ -45,12 +46,25 @@ public class SoundEffectManager {
         timeSlowingDownSound = soundPool.load(context, R.raw.tineslowdown, 1);
         timeRewindSound = soundPool.load(context, R.raw.timerewind, 1);
         hardQuestionSound = soundPool.load(context, R.raw.hardquestionsound, 1);
+        monsterDebut = soundPool.load(context, R.raw.monsterdebut, 1);
+        monsterDeath = soundPool.load(context, R.raw.monsterdeath, 1);
+
 
     }
+
+    public void PlayMonsterDeathSoundFX() {
+        soundPool.play(monsterDeath,1f, 1f, 1, 0, 1.0f );
+    }
+
 
     public void PlayCorrectSoundFX() {
         System.out.println("play Correct sound fx");
         soundPool.play(correctSound,1f, 1f, 1, 0, 1.0f );
+    }
+
+    public void  PlayMonsterDebutSoundFX() {
+        soundPool.play(monsterDebut,1f, 1f, 1, 0, 1.0f );
+
     }
 
     public void PlayWrongSoundFX() {

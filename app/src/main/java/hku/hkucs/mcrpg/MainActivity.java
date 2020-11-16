@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 System.out.println("Clicked OptionA");
                 ChangeOptionsClickability(false);
 
@@ -241,6 +242,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 System.out.println("Clicked OptionB");
                 ChangeOptionsClickability(false);
 
@@ -261,6 +263,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 System.out.println("Clicked OptionC");
                 ChangeOptionsClickability(false);
 
@@ -283,6 +286,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         optionD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 System.out.println("Clicked OptionD");
                 ChangeOptionsClickability(false);
 
@@ -306,37 +310,53 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlaySkilledClickedFX();
+
                 soundFX.PlayDisablingAnsFX();
                 System.out.println("Skill1");
                 HideIncorrectOption();
                 player.ResetCoolDown(0);
+                PlayerCoolDownUIUpdate();
             }
         });
         skill2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlaySkilledClickedFX();
+
                 soundFX.PlayTimeSlowDownFX();
                 System.out.println("Skill2");
                 monster.InreaseMonsterCD();
                 DelayCDAnimation(monster_cool_down_effect);
                 player.ResetCoolDown(1);
+                PlayerCoolDownUIUpdate();
+
             }
         });
         skill3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlaySkilledClickedFX();
+
+
                 soundFX.PlayTimeRewindFX();
                 player.increaseAvailableTime();
                 player.ResetCoolDown(2);
+                PlayerCoolDownUIUpdate();
+
             }
         });
         skill4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                soundFX.PlayHealingFX();
+                soundFX.PlaySkilledClickedFX();
+
+
                 System.out.println("Skill4");
                 player.heal = true;
                 player.ResetCoolDown(3);
+                PlayerCoolDownUIUpdate();
+
             }
         });
 
@@ -402,7 +422,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         switch (effect) {
             case "heal":
                 OnScreenEffect.setImageResource(R.drawable.heal_effect);
-
+                soundFX.PlayHealingFX();
                 tech = FadeOutUp;
                 break;
             case "decreaseAnsTime":
@@ -450,6 +470,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
 
     }
+
     public void updateSkillsLock() {
 
         if (player.skillLockRounds == 1) {
@@ -563,6 +584,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
 
         if (monster.isDead()) {
+//            soundFX.PlayMonsterDeathSoundFX();
             YoYo.with(FadeOutUp)
                     .duration(500)
                     .playOn(monsterImage);
@@ -597,6 +619,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         }
     }
 
+    private boolean playedTimeWarningSoundFx = false;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void UpdateUI() {
         //Monster
@@ -625,6 +649,11 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         //Timer
         if (Math.round(player.getTimeLeft()/1000) < 10) {
             timer.setTextColor(Color.RED);
+
+            if (!playedTimeWarningSoundFx) {
+                soundFX.PlayTimeTickingFX();
+                playedTimeWarningSoundFx = true;
+            }
         } else {
             timer.setTextColor(Color.BLACK);
         }
@@ -693,7 +722,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
     public void newTurn() {
-
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -701,6 +729,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                 PlayerCoolDownUIUpdate();
                 ChangeOptionsClickability(true);
                 AnnouncementAnimation("Player's Turn");
+                playedTimeWarningSoundFx = false;
 
             }
         }, 1100);
@@ -787,7 +816,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                             case 1:
 //                        System.out.println("Monster Debug: Decreasing answering time.");
                                 player.underAttack(monster.getDamage());
-                                soundFX.PlayTimeTickingFX();
                                 OnScreenAnimation("decreaseAnsTime");
                                 player.timeOffset = -20000;
                                 System.out.println("added time offset");
@@ -844,7 +872,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
     public void ScrambleAnswer() {
-        soundFX.PlayScrambledFX();
         for (int i = 0; i < options.length; i++) {
             options[i].setText("%#*@^&&*#@^&$*@&#@*(&$");
         }
@@ -875,6 +902,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     //  Update UI when new monster is spawned
     public void UpdateMonster() {
         monster = monsterSet.getCurrentMonster();
+        soundFX.PlayMonsterDebutSoundFX();
         stage.setText("Level " + String.valueOf(monsterSet.getCurrentStage()));
         monsterName.setText(monster.getName());
         monsterImage.setImageResource(getResources().getIdentifier(monster.getImagePath(), "drawable", getPackageName()));
