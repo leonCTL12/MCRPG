@@ -38,6 +38,7 @@ public class Player {
 
     //Attack will only be called when the player answer the correct answer
     public int Attack() {
+
         int damageDealt = Math.round(maximumAttackDamage * timeLeft/timeAvailablePerQuestion);
         if (heal) {
             heal(damageDealt);

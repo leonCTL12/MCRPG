@@ -3,9 +3,11 @@ package hku.hkucs.mcrpg;
 import androidx.annotation.FloatRange;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     questionBank questionSet;
     questionStruct currentQuestion;
     Button[] options;
+    Typeface type;
+
 
     public int questionCount = 0;
     public int correctCount = 0;
@@ -223,6 +227,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     soundFX.PlayCorrectSoundFX();
                     optionA.setTextColor(Color.GREEN);
                     EndTurn(player.Attack());
+                    soundFX.PlaySwordSlashFX();
                     correctCount++;
                 } else {
                     soundFX.PlayWrongSoundFX();
@@ -243,6 +248,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     soundFX.PlayCorrectSoundFX();
                     optionB.setTextColor(Color.GREEN);
                     EndTurn(player.Attack());
+                    soundFX.PlaySwordSlashFX();
                     correctCount++;
                 } else {
                     soundFX.PlayWrongSoundFX();
@@ -262,6 +268,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                     optionC.setTextColor(Color.GREEN);
                     soundFX.PlayCorrectSoundFX();
                     EndTurn(player.Attack());
+                    soundFX.PlaySwordSlashFX();
+
                     correctCount++;
 
                 } else {
@@ -283,6 +291,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
                     soundFX.PlayCorrectSoundFX();
                     EndTurn(player.Attack());
+                    soundFX.PlaySwordSlashFX();
                     correctCount++;
 
                 } else {
@@ -297,6 +306,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlayDisablingAnsFX();
                 System.out.println("Skill1");
                 HideIncorrectOption();
                 player.ResetCoolDown(0);
@@ -305,6 +315,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlayTimeSlowDownFX();
                 System.out.println("Skill2");
                 monster.InreaseMonsterCD();
                 DelayCDAnimation(monster_cool_down_effect);
@@ -314,6 +325,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlayTimeRewindFX();
                 player.increaseAvailableTime();
                 player.ResetCoolDown(2);
             }
@@ -321,6 +333,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         skill4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soundFX.PlayHealingFX();
                 System.out.println("Skill4");
                 player.heal = true;
                 player.ResetCoolDown(3);
@@ -389,6 +402,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         switch (effect) {
             case "heal":
                 OnScreenEffect.setImageResource(R.drawable.heal_effect);
+
                 tech = FadeOutUp;
                 break;
             case "decreaseAnsTime":
@@ -437,14 +451,17 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     }
     public void updateSkillsLock() {
+
         if (player.skillLockRounds == 1) {
             System.out.println("Unlock");
+            soundFX.PlayUnlockFX();
             for(int i = 0; i< locks.length; i++ ){
                 locks[i].setClickable(false);
                 locks[i].setAlpha(0f);
             }
         } else {
             System.out.println("get Locked");
+
             for (int i = 0; i < locks.length; i++) {
                 locks[i].setClickable(true);
                 locks[i].setAlpha((float)player.skillLockRounds/2);
@@ -536,6 +553,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                 MonsterTurn(damage);
             }
         }, 500);
+
     }
 
     private void MonsterTurn(final int damage) {
@@ -628,8 +646,23 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
             options[i].setTextColor(Color.WHITE);
         }
         currentQuestion = hardQuestion? questionSet.drawHardQuestion() :questionSet.randomDrawQuestion(); //draw the first question
-        if (hardQuestion) { hardQuestion = false;}
+
         questionLocation.setText(currentQuestion.getQuestion());
+        if (hardQuestion) {
+            hardQuestion = false;
+            //type = Typeface.createFromAsset(this.getAssets(), "fonts/gameover.ttf");
+            //questionLocation.setTypeface(type);
+            questionLocation.setTextColor(Color.parseColor("#8B0000"));
+            questionLocation.setTextSize(24);
+
+
+        }
+        else{
+            //type = Typeface.createFromAsset(this.getAssets(), "fonts/gameplay.ttf");
+            //questionLocation.setTypeface(type);
+            questionLocation.setTextColor(Color.parseColor("#333333"));
+            questionLocation.setTextSize(15);
+        }
         optionA.setText(currentQuestion.getAnsBank().get(0));
         optionB.setText(currentQuestion.getAnsBank().get(1));
         optionC.setText(currentQuestion.getAnsBank().get(2));
@@ -676,6 +709,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
     public void PlayerCoolDownIncreaseAnimation() {
+        soundFX.PlayTimeSlowDownFX();
         final TextView[] CDs = {skill1CD, skill2CD, skill3CD, skill4CD};
         for (int i = 0; i<CDs.length; i++) {
             CDs[i].setText("+4");
@@ -746,12 +780,14 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 //                        System.out.println("Monster Debug: Null Ability");
                                 break;
                             case 0:
+                                soundFX.PlayPlayerGotSlashedFX();
                                 player.underAttack(monster.getDamage());
 //                        System.out.println("Monster Debug: Normal Attack.");
                                 break;
                             case 1:
 //                        System.out.println("Monster Debug: Decreasing answering time.");
                                 player.underAttack(monster.getDamage());
+                                soundFX.PlayTimeTickingFX();
                                 OnScreenAnimation("decreaseAnsTime");
                                 player.timeOffset = -20000;
                                 System.out.println("added time offset");
@@ -761,9 +797,11 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                                 player.underAttack(monster.getDamage());
                                 OnScreenAnimation("translate");
                                 hardQuestion = true;
+                                soundFX.PlayHardQFX();
                                 break;
                             case 3:
 //                        System.out.println("Monster Debug: Increasing player skill CD.");
+                                soundFX.PlayTimeSlowDownFX();
                                 player.underAttack(monster.getDamage());
                                 player.DelayPlayerCD();
                                 OnScreenAnimation("increaseCoolDown");
@@ -771,12 +809,14 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                                 break;
                             case 4:
 //                        System.out.println("Monster Debug: Scrambling Answer.");
+                                soundFX.PlayScrambledFX();
                                 player.underAttack(monster.getDamage());
                                 OnScreenAnimation("scramble");
                                 scrambleOptions = true;
                                 break;
                             case 5:
                                 player.underAttack(monster.getDamage());
+                                soundFX.PlayLockingFX();
                                 System.out.println("Monster Debug: Locking Player Skills.");
                                 OnScreenAnimation("lock");
                                 player.skillLockRounds = 2;
@@ -804,6 +844,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     }
 
     public void ScrambleAnswer() {
+        soundFX.PlayScrambledFX();
         for (int i = 0; i < options.length; i++) {
             options[i].setText("%#*@^&&*#@^&$*@&#@*(&$");
         }

@@ -47,11 +47,11 @@ public class questionBank {
     public void infoBase() {
         question1.setter("Chemistry", 1, "What is the atomic number of Aluminium", "13", "14", "15", "16", 0);
         question2.setter("Mathematics", 4, "What is the answer of 1+2+3+...+48+49+50?", "1000", "1175", "1200", "1275", 3);
-        question3.setter("English", 1, "Where does the world \"Clichè\" come from?", "Spain", "France", "Egypt", "America", 1);
+        question3.setter("English", 1, "Where does the world \"Cliche\" come from?", "Spain", "France", "Egypt", "America", 1);
         question4.setter("Geography", 3, "What is the name of the second highest mountain?", "Mount Everest", "K2", "Cho Oyu", "Lhotse", 1);
         question5.setter("Biology", 2, "What is the range length of male blue whale penis?", "1 to 2 meters", "2 to 3 meters", "3 to 4 meters", "30cm", 1);
         question6.setter("Tricky Question", 1, "What is always coming, but never arrives?", "Winter", "Hi-bye friend", "Tomorrow", "The tortoise from Zeno's paradox", 2);
-        question7.setter("Philosophy", 4, "Who is the authur of Discours de la méthode？", "Friedrich Nietzsche", "Aristotle", "Socrates", "René Descartes", 3);
+        question7.setter("Philosophy", 4, "Who is the authur of Discours de la methode？", "Friedrich Nietzsche", "Aristotle", "Socrates", "René Descartes", 3);
         question8.setter("Computer Science", 4, "What is the time complexity of breadth-first search of a graph?", "O(V)", "O(E)", "O(V+E)", "O(V-E)", 2);
         question9.setter("Geography", 2, "What country does the city \"Fucking\" locate at?", "Bulgaria", "Australia", "Austria", "Argentina", 2);
         question10.setter("English", 2, "What work is not written by William Shakespeare?", "Dracula", "Othello", "Harmlet", "Macbeth", 0);
