@@ -1,10 +1,10 @@
 package hku.hkucs.mcrpg;
 
-import androidx.annotation.FloatRange;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,23 +12,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Text;
-
-import java.lang.annotation.Target;
-import java.net.Inet4Address;
 import java.util.Random;
 
 import static com.daimajia.androidanimations.library.Techniques.FadeOutDown;
@@ -59,7 +53,17 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     TextView ability2_name;
     TextView ability3_name;
     TextView ability4_name;
+    TextView ability1_description;
+    TextView ability2_description;
+    TextView ability3_description;
+    TextView ability4_description;
+    TextView monster_currentHealth;
+    TextView getDamage_animation;
     ImageView monsterImage;
+    ImageButton ability1_image;
+    ImageButton ability2_image;
+    ImageButton ability3_image;
+    ImageButton ability4_image;
     ImageView effect_fire1;
     ImageView effect_fire2;
     ImageView effect_hit;
@@ -67,6 +71,11 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     ImageView effect_knift_left;
     ImageView effect_knift_right;
     ImageView monster_cool_down_effect;
+    HealthBar healthBar_monster;
+    ConstraintLayout ability1_popup;
+    ConstraintLayout ability2_popup;
+    ConstraintLayout ability3_popup;
+    ConstraintLayout ability4_popup;
 
 
     //Player
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,11 +144,21 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         ability2_cd = findViewById(R.id.textView_ability2_cd);
         ability3_cd = findViewById(R.id.textView_ability3_cd);
         ability4_cd = findViewById(R.id.textView_ability4_cd);
-        ability1_name = findViewById(R.id.textView_ability1_name);
-        ability2_name = findViewById(R.id.textView_ability2_name);
-        ability3_name = findViewById(R.id.textView_ability3_name);
-        ability4_name = findViewById(R.id.textView_ability4_name);
+        ability1_name = findViewById(R.id.ability1_popup_name);
+        ability2_name = findViewById(R.id.ability2_popup_name);
+        ability3_name = findViewById(R.id.ability3_popup_name);
+        ability4_name = findViewById(R.id.ability4_popup_name);
+        monster_currentHealth = findViewById(R.id.textView_currentHealth);
+        getDamage_animation = findViewById(R.id.textView_getDamage);
         monsterImage = findViewById(R.id.imageView_monster);
+        ability1_image = findViewById(R.id.imageButton_ability1);
+        ability2_image = findViewById(R.id.imageButton_ability2);
+        ability3_image = findViewById(R.id.imageButton_ability3);
+        ability4_image = findViewById(R.id.imageButton_ability4);
+        ability1_description = findViewById(R.id.ability1_popup_description);
+        ability2_description = findViewById(R.id.ability2_popup_description);
+        ability3_description = findViewById(R.id.ability3_popup_description);
+        ability4_description = findViewById(R.id.ability4_popup_description);
         effect_fire1 = findViewById(R.id.imageView_effect_fire1);
         effect_fire2 = findViewById(R.id.imageView_effect_fire2);
         effect_hit = findViewById(R.id.hitImageView);
@@ -147,10 +167,11 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         effect_knift_right = findViewById(R.id.knift_right);
         doubleEdgeSwordDebuff = findViewById(R.id.DebuffIcon);
         monster_cool_down_effect = findViewById(R.id.MonsterCoolDownDebuff);
-
-
-
-
+        healthBar_monster = new HealthBar((ImageView) findViewById(R.id.imageView_healthBar_front));
+        ability1_popup = findViewById(R.id.ability1_popup_group);
+        ability2_popup = findViewById(R.id.ability2_popup_group);
+        ability3_popup = findViewById(R.id.ability3_popup_group);
+        ability4_popup = findViewById(R.id.ability4_popup_group);
 
         //Player
         player = new Player();
@@ -215,6 +236,77 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         player.startTimer(30000);
         UpdateMonster();
         newTurn();
+
+        //Monster
+        ability1_image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                System.out.println("Monster Debug: success!");
+                ability1_popup.setAlpha(1.0f);
+                return true;
+            }
+        });
+        ability1_image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    ability1_popup.setAlpha(0f);
+                }
+                return false;
+            }
+        });
+        ability2_image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                System.out.println("Monster Debug: success!");
+                ability2_popup.setAlpha(1.0f);
+                return true;
+            }
+        });
+        ability2_image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    ability2_popup.setAlpha(0f);
+                }
+                return false;
+            }
+        });
+        ability3_image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                System.out.println("Monster Debug: success!");
+                ability3_popup.setAlpha(1.0f);
+                return true;
+            }
+        });
+        ability3_image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    ability3_popup.setAlpha(0f);
+                }
+                return false;
+            }
+        });
+        ability4_image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                System.out.println("Monster Debug: success!");
+                ability4_popup.setAlpha(1.0f);
+                return true;
+            }
+        });
+        ability4_image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    ability4_popup.setAlpha(0f);
+                }
+                return false;
+            }
+        });
+
 
         //Player
         optionA.setOnClickListener(new View.OnClickListener() {
@@ -391,7 +483,6 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         //Leon: Let's have some bgm
         Intent intent = new Intent(MainActivity.this, BackgroundMusicService.class);
         startService(intent);
-
     }
 
     private void ChangeOptionsClickability(boolean clickable) {
@@ -401,6 +492,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
         }
     }
+
+
 
     public void DelayCDAnimation(final ImageView target) {
         target.setAlpha(1f);
@@ -494,14 +587,13 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
         effect_underAttack.setAlpha(0.5f);
 
-
         YoYo.with(Techniques.Flash)
                 .duration(1000)
                 .playOn(effect_underAttack);
+
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 effect_underAttack.setAlpha(0f);
             }
         }, 1100);
@@ -577,10 +669,25 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
 
     }
 
+    private void MonsterGetDamageAnimation(int damage) {
+        getDamage_animation.setText("-" + String.valueOf(damage));
+        getDamage_animation.setAlpha(1.0f);
+
+        YoYo.with(Techniques.BounceInDown)
+                .duration(500)
+                .playOn(getDamage_animation);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getDamage_animation.setAlpha(0f);
+            }
+        }, 600);
+    }
+
     private void MonsterTurn(final int damage) {
 
-            monster.underAttack(damage);
-
+        if (damage > 0) { MonsterGetDamageAnimation(damage); }
+        monster.underAttack(damage);
 
 
         if (monster.isDead()) {
@@ -625,6 +732,8 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
     public void UpdateUI() {
         //Monster
         monsterHealthBar.setProgress(monster.getHealth());
+        healthBar_monster.setHealth((float)monster.getHealth() / 100f);
+        monster_currentHealth.setText(String.valueOf(monster.getHealth()));
         ability1_cd.setText("CD " + monster.getAbilityCD(0));
         ability2_cd.setText("CD " + monster.getAbilityCD(1));
         ability3_cd.setText("CD " + monster.getAbilityCD(2));
@@ -855,8 +964,15 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
                                 DoubleEdgeSwordIcon(true);
                                 player.underAttack(monster.getDamage());
                                 OnScreenAnimation("double edge");
-
                                 player.doubleEdgeSword = true;
+                                break;
+                            case 7:
+                                System.out.println("Monster Debug: Shuffle Answer.");
+                                // TODO Implement this ability
+                                break;
+                            case 8:
+                                System.out.println("Monster Debug: Can You See?");
+                                // TODO Implement this ability
                                 break;
                             default:
 //                        System.out.println("Monster Debug: Error abilityID.");
@@ -906,32 +1022,47 @@ public class MainActivity extends AppCompatActivity { //Leon: this script will a
         stage.setText("Level " + String.valueOf(monsterSet.getCurrentStage()));
         monsterName.setText(monster.getName());
         monsterImage.setImageResource(getResources().getIdentifier(monster.getImagePath(), "drawable", getPackageName()));
+        System.out.println(monster.getAbilityImagePath(0));
+        ability1_image.setBackgroundResource(getResources().getIdentifier(monster.getAbilityImagePath(0), "drawable", getPackageName()));
+        ability2_image.setBackgroundResource(getResources().getIdentifier(monster.getAbilityImagePath(1), "drawable", getPackageName()));
+        ability3_image.setBackgroundResource(getResources().getIdentifier(monster.getAbilityImagePath(2), "drawable", getPackageName()));
+        ability4_image.setBackgroundResource(getResources().getIdentifier(monster.getAbilityImagePath(3), "drawable", getPackageName()));
         ability1_name.setText(monster.getAbilityName(0));
         ability2_name.setText(monster.getAbilityName(1));
         ability3_name.setText(monster.getAbilityName(2));
         ability4_name.setText(monster.getAbilityName(3));
+        ability1_description.setText(monster.getAbilityDescription(0));
+        ability2_description.setText(monster.getAbilityDescription(1));
+        ability3_description.setText(monster.getAbilityDescription(2));
+        ability4_description.setText(monster.getAbilityDescription(3));
         if (monster.getAbilityID(1) == -1) {
             ability2_name.setVisibility(View.INVISIBLE);
             ability2_cd.setVisibility(View.INVISIBLE);
+            ability2_image.setVisibility(View.INVISIBLE);
         }
         else {
             ability2_name.setVisibility(View.VISIBLE);
             ability2_cd.setVisibility(View.VISIBLE);
+            ability2_image.setVisibility(View.VISIBLE);
         }
         if (monster.getAbilityID(2) == -1) {
             ability3_name.setVisibility(View.INVISIBLE);
             ability3_cd.setVisibility(View.INVISIBLE);
+            ability3_image.setVisibility(View.INVISIBLE);
         }
         else {
             ability3_name.setVisibility(View.VISIBLE);
             ability3_cd.setVisibility(View.VISIBLE);
+            ability3_image.setVisibility(View.VISIBLE);
         }if (monster.getAbilityID(3) == -1) {
             ability4_name.setVisibility(View.INVISIBLE);
             ability4_cd.setVisibility(View.INVISIBLE);
+            ability4_image.setVisibility(View.INVISIBLE);
         }
         else {
             ability4_name.setVisibility(View.VISIBLE);
             ability4_cd.setVisibility(View.VISIBLE);
+            ability4_image.setVisibility(View.VISIBLE);
         }
     }
 

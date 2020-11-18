@@ -5,6 +5,8 @@ public class Monster {
     private String name;
     private String imagePath;
     private String abilityName[];
+    private String abilityDescription[];
+    private String abilityImagePath[];
     private int abilityID[]; // id -1 = no ability, 0 = normal attack
     private int abilityCD[];
     private int abilityCD_ADJ[];
@@ -23,7 +25,9 @@ public class Monster {
     public void initialize() {
         name = "monsterName";
         imagePath = "";
-        abilityName = new String[]{"Normal Attack", "Ability 2", "Ability 3", "Ability 4"};
+        abilityName = new String[]{"Basic Attack", "Ability 2", "Ability 3", "Ability 4"};
+        abilityDescription = new String[4];
+        abilityImagePath = new String[4];
         abilityID = new int[]{0, -1, -1, -1};
         abilityCD_MAX = new int[]{0, 0, 0, 0};
         abilityCD = abilityCD_MAX.clone();
@@ -58,28 +62,53 @@ public class Monster {
         for (int i = 0; i < 4; i++) {
             switch (abilityID[i]) {
                 case 0:
-                    abilityName[i] = "Normal Attack";
+                    abilityName[i] = "Basic Attack";
+                    abilityImagePath[i] = "normal_attack";
+                    abilityDescription[i] = "A basic ability that every monster has";
                     break;
                 case 1:
                     abilityName[i] = "Decrease Answering Time";
+                    abilityImagePath[i] = "decrease_ans_time";
+                    abilityDescription[i] = "Decrease your answering time by 20 seconds";
                     break;
                 case 2:
-                    abilityName[i] = "Increase Question Difficulty";
+                    abilityName[i] = "Translate Language";
+                    abilityImagePath[i] = "translate_effect";
+                    abilityDescription[i] = "Translate both question and answers to another language";
                     break;
                 case 3:
                     abilityName[i] = "Increase Player Skill CD";
+                    abilityImagePath[i] = "cd_increase_effect";
+                    abilityDescription[i] = "Increase all your's skills cool down by 4 turns";
                     break;
                 case 4:
                     abilityName[i] = "Scramble Answer";
+                    abilityImagePath[i] = "scramble_effect";
+                    abilityDescription[i] = "Scramble all answers to some unreadable code";
                     break;
                 case 5:
                     abilityName[i] = "Lock Player Skills";
+                    abilityImagePath[i] = "lock_effect";
+                    abilityDescription[i] = "Lock all your's skill for 2 rounds";
                     break;
                 case 6:
                     abilityName[i] = "Double-edge Sword";
+                    abilityImagePath[i] = "double_edge_sword_effect";
+                    abilityDescription[i] = "Your next attack will deal the same amount of damage to yourself";
+                    break;
+                case 7:
+                    abilityName[i] = "Shuffle Answer";
+                    abilityImagePath[i] = "effect_shuffle";
+                    abilityDescription[i] = "Cover all answers and shuffle them into a new place";
+                    break;
+                case 8:
+                    abilityName[i] = "Can You See?";
+                    abilityImagePath[i] = "effect_change_colour";
+                    abilityDescription[i] = "The colour of both question and answers will be changed";
                     break;
                 default:
                     abilityName[i] = "Null Ability " + String.valueOf(i + 1);
+                    abilityImagePath[i] = "";
                     break;
             }
         }
@@ -88,6 +117,14 @@ public class Monster {
 
     public int getAbilityID(int index) {
         return abilityID[index];
+    }
+
+    public String getAbilityImagePath(int index) {
+        return abilityImagePath[index];
+    }
+
+    public String getAbilityDescription(int index) {
+        return abilityDescription[index];
     }
 
     public void setOnFire() {

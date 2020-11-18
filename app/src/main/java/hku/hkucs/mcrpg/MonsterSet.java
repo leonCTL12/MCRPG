@@ -11,7 +11,7 @@ public class MonsterSet {
     }
 
     public void initialize() {
-        monsterSet = new Monster[]{new Monster(), new Monster(), new Monster()};
+        monsterSet = new Monster[]{new Monster(), new Monster(), new Monster(), new Monster()};
 
         currentMonsterIndex = 0;
         currentStage = 1;
@@ -36,6 +36,13 @@ public class MonsterSet {
         monsterSet[2].setAbilityCD_ADJ(currentStage);
         monsterSet[2].setImagePath("monster_teeny_sanguini");
         monsterSet[2].setDamage(currentStage);
+
+        monsterSet[3].setName("Sacksquatch");
+        monsterSet[3].setAbilityID(new int[]{0, 7, 8, -1});
+        monsterSet[3].setAbilityCD_MAX(new int[]{3, 5, 7, 0});
+        monsterSet[3].setAbilityCD_ADJ(currentStage);
+        monsterSet[3].setImagePath("monster_sacksquatch");
+        monsterSet[3].setDamage(currentStage);
     }
 
     public Monster getCurrentMonster() {
@@ -50,7 +57,7 @@ public class MonsterSet {
     public void defected() {
 
         System.out.println("Defected!!!!");
-        if (++currentMonsterIndex >= 3) {
+        if (++currentMonsterIndex >= 4) {
             //TODO: call change stage function (BG and Change BGM)
 
             currentMonsterIndex = 0;
