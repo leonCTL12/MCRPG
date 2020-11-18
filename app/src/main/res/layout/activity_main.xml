@@ -603,10 +603,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="13dp"
-            android:fontFamily="@font/ka1"
             android:text="Basic Attack"
             android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -617,10 +616,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="47dp"
-            android:fontFamily="@font/ka1"
             android:text="Your next attack will deal the same amount of damage to yourself"
             android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -651,10 +649,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="13dp"
-            android:fontFamily="@font/ka1"
             android:text="Basic Attack"
             android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -665,10 +662,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="47dp"
-            android:fontFamily="@font/ka1"
             android:text="Your next attack will deal the same amount of damage to yourself"
             android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -699,10 +695,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="13dp"
-            android:fontFamily="@font/ka1"
             android:text="Basic Attack"
             android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -713,10 +708,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="47dp"
-            android:fontFamily="@font/ka1"
             android:text="Your next attack will deal the same amount of damage to yourself"
             android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

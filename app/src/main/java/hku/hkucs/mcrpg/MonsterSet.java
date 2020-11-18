@@ -57,7 +57,7 @@ public class MonsterSet {
     public void defected() {
 
         System.out.println("Defected!!!!");
-        if (++currentMonsterIndex >= 4) {
+        if (++currentMonsterIndex >= 3) {
             //TODO: call change stage function (BG and Change BGM)
 
             currentMonsterIndex = 0;
